@@ -1,148 +1,87 @@
 <!doctype html>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>AX Elements</title>
+<style>
+  body {
+    font-family: sans-serif;
+  }
+</style>
+<script type="module">
+  import './main.mjs'
+  import './button.mjs'
+  import './dialog.mjs'
+  import './announcement.mjs'
+  import './form.mjs'
+  import './textbox.mjs'
+  window.checkWeather = function() {
+    const type = [
+      'Dreary',
+      'Sunny',
+      'Pleasant',
+      'Hot',
+      'Snowing'
+    ][Math.round((Math.random() * 4))]
+    window.document.querySelector('[data-el="weather"]').innerText = type
+    window.document.querySelector('ax-announcement').setAttribute('ax-say', `Today's weather is ${type}.`)
+  }
+</script>
 <body>
-  <style>
-    body {
-      font-family: sans-serif;
-    }
-  </style>
-  <main>
-    <aom-button onclick="this.parentElement.parentElement.querySelector('aom-dialog').setAttribute('open', '')">
-      Button!
-    </aom-button>
-  </main>
-  <aom-dialog title="Error">
-    Dialog!!
-  </aom-dialog>
-  <script>
-    ;(() => {
-      class AOMElement extends HTMLElement {
-        constructor() {
-          super()
-        }
-        get role() {
-          return this.getAttribute('role')
-        }
-        set role(role) {
-          this.setAttribute('role', role)
-        }
-        get ariaModal() {
-          return this.getAttribute('aria-modal')
-        }
-        set ariaModal(ariaModal) {
-          this.setAttribute('aria-modal', ariaModal)
-        }
-      }
-      window.customElements.define('aom-button', class extends HTMLElement {
-        constructor() {
-          super()
-          this.tabIndex = '0'
-          this.role = 'button'
-          this.addEventListener('keydown', ({ key }) => {
-            if (key === 'Enter' || key === ' ') {
-              this.dispatchEvent(new CustomEvent('click'))
-            }
-          })
-        }
-      })
-      const aomDialogTemplateEl = window.document.createElement('template')
-      aomDialogTemplateEl.innerHTML = `
-        <style>
-          :host(:not([open])) {
-            display: none !important;
-          }
-          :host([open]) {
-            display: grid;
-            grid-template-columns: minmax(0, 1fr) max-content;
-            grid-template-rows: min-content minmax(0, 1fr);
-            grid-gap: 12px;
-            height: 100%;
-            width: 100%;
-            position: fixed;
-            top: 0;
-            left: 0;
-            background: white;
-          }
-          h1 {
-            grid-column: 1 / 2;
-            background: green;
-          }
-          button {
-            grid-column: 2 / 3;
-            background: blue;
-          }
-          [role="presentation"] {
-            grid-column: 1 / 3;
-            background: pink;
-          }
-        </style>
-        <h1 slot="title"></h1>
-        <button slot="close">
-          Close
-        </button>
-        <div role="presentation" part="contents">
-          <slot></slot>
-        </div>
-      `
-      window.document.body.append(aomDialogTemplateEl)
-      window.customElements.define('aom-dialog', class extends AOMElement {
-        constructor() {
-          super()
-          this.tabIndex = '0'
-          this.role = 'dialog'
-          this.ariaModal = true
-          this._priorFocus = null
-          this.addEventListener('input', ({ inputType, detail }) => {
-            const type = inputType || detail
-            if (type === 'actionDismiss') {
-              this.removeAttribute('open')
-            }
-          })
-          this.addEventListener('keydown', ({ key }) => {
-            if (key === 'Escape') {
-              this.dispatchEvent(new CustomEvent('input', {
-                detail: 'actionDismiss'
-              }))
-            }
-          })
-          const contents = aomDialogTemplateEl.content.cloneNode(true)
-          this.attachShadow({ mode: 'open' })
-          contents.querySelector('button').addEventListener('click', () => {
-            this.dispatchEvent(new CustomEvent('input', {
-              detail: 'actionDismiss'
-            }))
-          })
-          this.shadowRoot.append(contents)
-        }
-        static get observedAttributes() {
-          return [
-            'open',
-            'title'
-          ]
-        }
-        attributeChangedCallback(attributeName, prev, value) {
-          switch (attributeName) {
-            case 'open': {
-              if (value === '' && !prev) {
-                this._priorFocus = window.document.activeElement
-                this.focus()
-                window.document.querySelector('main').setAttribute('inert', '')
-              } else if (prev === '' && this.priorFocus) {
-                window.document.querySelector('main').removeAttribute('inert')
-                this._priorFocus.focus()
-                this._priorFocus = null
-              }
-            }
-            break
-            case 'title': {
-              this.shadowRoot.querySelector('h1').innerHTML = value
-            }
-            break
-            default: return
-          }
-        }
-      })
-    })()
-  </script>
-</body>
+<ax-main ax-title="AX Elements">
+  <dl aria-label="Examples">
+    <dt>
+      Dialog
+    </dt>
+    <dd>
+      <ax-button
+        ax-label="Add to Cart"
+        ax-open-dialog="cart">
+      </ax-button>
+    </dd>
+    <dt>
+      Announcement
+    </dt>
+    <dd>
+      <ax-button
+        ax-label="Check the Weather"
+        onclick="checkWeather()">
+      </ax-button>
+      <figure>
+        <figcaption>Weather:</figcaption>
+        <span data-el="weather">?</span>
+      </figure>
+    </dd>
+    <dt>
+      Forms
+    </dt>
+    <dd>
+      <ax-form>
+        <ax-textbox
+          ax-label="First Name"
+          ax-name="firstName">
+        </ax-textbox>
+        <ax-textbox
+          ax-label="Last Name"
+          ax-name="lastName">
+        </ax-textbox>
+        <ax-button
+          ax-label="Submit"
+          ax-submit>
+        </ax-button>
+      </ax-form>
+    </dd>
+  </dl>
+</ax-main>
+<ax-dialog
+  ax-name="cart"
+  ax-title="Shopping Cart"
+  hidden>
+  <p slot="body">
+    I'm the content!
+  </p>
+  <p slot="body">
+    I too am content inside of a dialog!!
+    <a href="#">??</a>
+  </p>
+</ax-dialog>
+<ax-announcement></ax-announcement>
