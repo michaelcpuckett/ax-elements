@@ -32,12 +32,6 @@ template.innerHTML = `
       padding: var(--ax-padding, 8px 12px);
       font-size: var(--ax-font-size, larger);
     }
-    :host(:focus) {
-      outline: 4px solid var(--ax-focus-color, #63ADE5);
-    }
-    :host(:focus:focus-visible) {
-      outline: 0;
-    }
     :host(:focus-visible) {
       box-shadow: 0 0 0 4px var(--ax-focus-color, #63ADE5);
     }

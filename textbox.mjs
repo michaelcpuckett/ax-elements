@@ -4,8 +4,12 @@ const template = window.document.createElement('template')
 template.innerHTML = `
   <style>
     [data-el="wrapper"] {
-      display: block;
+      display: grid;
+      align-items: center;
       width: 100px;
+      font-family: var(--ax-input-font-family, sans-serif);
+      font-size: var(--ax-font-size, medium);
+      color: var(--ax-input-color, black);
       height: 1em;
       overflow: hidden;
       border: 1px solid;
@@ -19,8 +23,6 @@ template.innerHTML = `
     }
     [data-el="input"] {
       display: inline-grid;
-      font-family: var(--ax-input-font-family, sans-serif);
-      color: var(--ax-input-color, black);
       white-space: nowrap;
       grid-auto-flow: column;
     }
