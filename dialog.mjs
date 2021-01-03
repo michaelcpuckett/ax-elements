@@ -14,6 +14,17 @@ template.innerHTML = `
       position: fixed;
       top: 0;
       left: 0;
+      grid-template-columns: calc(100% + 1px);
+      grid-template-rows: calc(100% + 1px);
+      overflow: scroll;
+      overscroll-behavior: none;
+    }
+    [data-el="scrollable"] {
+      display: grid;
+      grid-column: 1 / -1;
+      grid-row: 1 / -1;
+      height: 100%;
+      width: 100%;
       grid-template-columns: 100%;
       grid-template-rows: 100%;
     }
@@ -25,6 +36,7 @@ template.innerHTML = `
       top: 0;
       left: 0;
       background-color: var(--ax-overlay-color, rgba(0, 0, 0, .667));
+      overflow: scroll;
     }
     [data-el="dialog"] {
       display: grid;
@@ -60,33 +72,37 @@ template.innerHTML = `
     }
   </style>
   <div
-    data-el="overlay"
+    data-el="scrollable"
     role="presentation">
-  </div>
-  <div
-    role="dialog"
-    tabindex="-1"
-    aria-modal="true"
-    aria-labelledby="title"
-    aria-describedby="body"
-    data-el="dialog"
-    role="presentation">
-    <h1
-      slot="title"
-      data-el="title"
-      id="title">
-    </h1>
-    <ax-button
-      slot="close"
-      ax-icon="close"
-      ax-label="Close"
-      data-el="close">
-    </ax-button>
     <div
-      data-el="body"
-      role="presentation"
-      id="body">
-      <slot></slot>
+      data-el="overlay"
+      role="presentation">
+    </div>
+    <div
+      role="dialog"
+      tabindex="-1"
+      aria-modal="true"
+      aria-labelledby="title"
+      aria-describedby="body"
+      data-el="dialog"
+      role="presentation">
+      <h1
+        slot="title"
+        data-el="title"
+        id="title">
+      </h1>
+      <ax-button
+        slot="close"
+        ax-icon="close"
+        ax-label="Close"
+        data-el="close">
+      </ax-button>
+      <div
+        data-el="body"
+        role="presentation"
+        id="body">
+        <slot></slot>
+      </div>
     </div>
   </div>
 `
@@ -96,6 +112,11 @@ window.customElements.define('ax-dialog', class extends AXElement {
   constructor() {
     super(template)
     this._priorFocus = null
+    this.addEventListener('scroll', () => {
+      if (this.scrollTop || this.scrollLeft) {
+        this.scrollTo(0, 0)
+      }
+    })
     this.addEventListener('input', ({ inputType }) => {
       if (inputType === 'actionDismiss') {
         this.removeAttribute('ax-open')
