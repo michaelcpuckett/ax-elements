@@ -1,9 +1,11 @@
 export default class AXElement extends HTMLElement {
   constructor(template) {
     super()
-    const contents = template.content.cloneNode(true)
-    this.attachShadow({ mode: 'open' })
-    this.shadowRoot.append(contents)
+    if (template) {
+      const contents = template.content.cloneNode(true)
+      this.attachShadow({ mode: 'open' })
+      this.shadowRoot.append(contents)
+    }
   }
   get role() {
     return this.getAttribute('role')

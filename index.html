@@ -3,7 +3,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>AX Elements</title>
 <style>
-  body {
+  :root {
     --ax-interactive-color: blue;
     --ax-interactive-background-color: white;
     --ax-border-radius: 8px;
@@ -41,9 +41,12 @@
       Button
     </dt>
     <dd>
-      <ax-button onclick="alert('Button!')">
-        Click Me
+      <ax-button onclick="document.querySelector('[data-el=button-output]').innerText = (parseInt(document.querySelector('[data-el=button-output]').innerText, 10) || 0) + 1">
+        Increase Counter
       </ax-button>
+      <output data-el="button-output">
+        0
+      </output>
     </dd>
     <dt>
       Details/Summary
@@ -59,8 +62,37 @@
         <ax-summary>
           Software Engineer
         </ax-summary>
-        <p>Someone who makes creates computer programs.</p>
+        <p>Someone who creates computer programs.</p>
       </ax-details>
+    </dd>
+    <dt>
+      Textbox
+    </dt>
+    <dd>
+      <ax-textbox ax-label="Example"></ax-textbox>
+      <!-- See Console for Error -->
+      <ax-textbox></ax-textbox>
+    </dd>
+    <dt>Form</dt>
+    <dd>
+      <ax-form onsubmit="
+        document.querySelector('[data-el=form-output]').innerText = JSON.stringify(Object.fromEntries([...this.querySelectorAll('[ax-value]')].map(el => [ el.getAttribute('ax-name'), el.getAttribute('ax-value') ])))
+      ">
+        <ax-textbox
+          ax-label="First Name"
+          ax-name="firstName"
+          ax-placeholder="John">
+        </ax-textbox>
+        <ax-textbox
+          ax-label="Last Name"
+          ax-name="lastName"
+          ax-placeholder="Doe">
+        </ax-textbox>
+        <ax-button ax-submit>
+          Submit
+        </ax-button>
+        <output data-el="form-output" />
+      </ax-form>
     </dd>
     <dt>
       Dialog
@@ -69,6 +101,17 @@
       <ax-button ax-open-dialog="cart">
         Add to Cart
       </ax-button>
+    </dd>
+    <dt>
+      Alert
+    </dt>
+    <dd>
+      <ax-form>
+        <ax-textbox />
+        <ax-button ax-open-dialog="saved">
+          Save
+        </ax-button>
+      </ax-form>
     </dd>
     <dt>
       Announcement
@@ -81,26 +124,6 @@
         <figcaption>Weather:</figcaption>
         <span data-el="weather">?</span>
       </figure>
-    </dd>
-    <dt>
-      Form/Textbox/Submit Button
-    </dt>
-    <dd>
-      <ax-form onsubmit="
-        console.log(Object.fromEntries([...this.querySelectorAll('[ax-value]')].map(el => [ el.getAttribute('ax-name'), el.getAttribute('ax-value') ])))
-      ">
-        <ax-textbox
-          ax-label="First Name"
-          ax-name="firstName">
-        </ax-textbox>
-        <ax-textbox
-          ax-label="Last Name"
-          ax-name="lastName">
-        </ax-textbox>
-        <ax-button ax-submit>
-          Submit
-        </ax-button>
-      </ax-form>
     </dd>
     <dt>
       Grid
@@ -189,4 +212,4 @@
     <a href="#">??</a>
   </p>
 </ax-dialog>
-<ax-announcement></ax-announcement>
+<ax-announcement />

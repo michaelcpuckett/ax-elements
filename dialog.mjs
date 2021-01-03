@@ -1,5 +1,5 @@
 import AXElement from './element.mjs'
-import DismissEvent from './ActionDismissInputEvent.mjs'
+import DismissEvent from './internal/ActionDismissInputEvent.mjs'
 
 const template = window.document.createElement('template')
 template.innerHTML = `

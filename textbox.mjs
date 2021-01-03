@@ -1,4 +1,5 @@
 import AXElement from './element.mjs'
+import AXError from './internal/Error.mjs'
 
 const template = window.document.createElement('template')
 template.innerHTML = `
@@ -23,8 +24,9 @@ template.innerHTML = `
       overflow: hidden;
       border: 1px solid;
       border-radius: var(--ax-input-border-radius, 0);
-      padding: 4px;
+      padding: var(--ax-input-padding, 4px);
       width: 100%;
+      position: relative;
     }
     [data-el="wrapper"]:focus-within {
       outline: 0;
@@ -34,12 +36,26 @@ template.innerHTML = `
       display: inline-grid;
       white-space: nowrap;
       grid-auto-flow: column;
+      align-items: center;
+      grid-column: 1 / -1;
+      grid-row: 1 / -1;
     }
     [data-el="input"]:focus {
       outline: 0;
     }
     [data-el="input"] * {
       display: none;
+    }
+    [data-el="placeholder"]:not([hidden]) {
+      display: inline-grid;
+    }
+    [data-el="placeholder"] {
+      grid-column: 1 / -1;
+      grid-row: 1 / -1;
+      white-space: nowrap;
+      align-items: center;
+      color: var(--ax-placeholder-color, gray);
+      pointer-events: none;
     }
   </style>
   <span
@@ -52,6 +68,11 @@ template.innerHTML = `
     role="presentation"
     data-el="wrapper">
     <span
+      hidden
+      aria-hidden="true"
+      data-el="placeholder">
+    </span>
+    <span
       contenteditable
       tabindex="0"
       role="textbox"
@@ -61,11 +82,12 @@ template.innerHTML = `
   </span>
 `
 window.document.body.append(template)
-window.customElements.define('ax-textbox', class extends AXElement {
+window.customElements.define('ax-textbox', class AXTextbox extends AXElement {
   constructor() {
     super(template)
     this._labelEl = this.shadowRoot.querySelector('[data-el="label"]')
     this._inputEl = this.shadowRoot.querySelector('[data-el="input"]')
+    this._placeholderEl = this.shadowRoot.querySelector('[data-el="placeholder"]')
     this._resetCursor = () => {
       window.document.execCommand('selectAll', false, null)
       window.document.getSelection().collapseToEnd()
@@ -78,12 +100,44 @@ window.customElements.define('ax-textbox', class extends AXElement {
     this._labelEl.addEventListener('focus', () => {
       this._inputEl.focus()
     })
-    this._inputEl.addEventListener('input', ({ inputType }) => {
-      if (inputType === 'insertText') {
-        this.setAttribute('ax-value', this._inputEl.innerText)
-      } else {
-        this._inputEl.innerText = this.getAttribute('ax-value')
+    this._inputEl.addEventListener('beforeinput', event => {
+      console.log('>', event.inputType)
+      if (![
+        'insertText',
+        'insertReplacementText',
+        'insertFromYank',
+        'insertFromDrop',
+        'insertFromPaste',
+        'insertFromPasteAsQuotation', // ?
+        'insertTranspose',
+        'insertCompositionText', // ?
+
+        'deleteSoftLineBackward',
+        'deleteSoftLineForward',
+        'deleteEntireSoftLine',
+        'deleteHardLineBackward',
+        'deleteHardLineForward',
+
+        'deleteByDrag',
+        'deleteByCut',
+        'deleteByPaste',
+        'deleteContent',
+        'deleteContentBackward',
+        'deleteContentForward',
+        'deleteWordForward',
+        'deleteWordBackward',
+
+        'historyUndo',
+        'historyRedo',
+
+        'formatSetInlineTextDirection',
+        'formatSetBlockTextDirection'
+      ].includes(event.inputType)) {
+        event.preventDefault()
       }
+    })
+    this._inputEl.addEventListener('input', () => {
+      this.setAttribute('ax-value', this._inputEl.innerText)
     })
     this._inputEl.addEventListener('keydown', event => {
       if (event.key === 'Enter') {
@@ -96,17 +150,55 @@ window.customElements.define('ax-textbox', class extends AXElement {
     })
   }
 
+  connectedCallback() {
+    if (!this.hasAttribute('ax-label')) {
+      this.remove()
+      throw new AXError('<ax-textbox> requires ax-label attribute')
+    }
+  }
+
   static get observedAttributes() {
     return [,
       'ax-name',
       'ax-label',
-      'ax-value'
+      'ax-value',
+      'ax-required',
+      'ax-disabled',
+      'ax-placeholder'
     ]
   }
   attributeChangedCallback(attributeName, prev, value) {
     switch (attributeName) {
       case 'ax-label': {
-        this._labelEl.innerText = value
+        if (value) {
+          this._labelEl.innerText = value
+        } else {
+          this.remove()
+          throw new AXError('<ax-textbox> requires ax-label attribute')
+        }
+      }
+      break
+      case 'ax-value': {
+        if (value) {
+          this._placeholderEl.setAttribute('hidden', '')
+        } else {
+          this._placeholderEl.removeAttribute('hidden')
+        }
+      }
+      break
+      case 'ax-placeholder': {
+        if (value) {
+          this._placeholderEl.innerText = value
+          this._placeholderEl.removeAttribute('hidden')
+        } else {
+          this._placeholderEl.setAttribute('hidden', '')
+        }
+      }
+      break
+      case 'ax-disabled': {
+        if (value || value === '') {
+          this._inputEl.removeAttribute('contenteditable')
+        }
       }
       break
       default: return
