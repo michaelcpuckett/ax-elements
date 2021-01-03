@@ -23,9 +23,7 @@ window.customElements.define('ax-cell', class extends AXElement {
           const activeCellEl = gridEl.querySelector('ax-cell[ax-active]')
           if (activeCellEl && activeCellEl !== this) {
             this.setAttribute('ax-active', '')
-            this.tabIndex = '0'
             activeCellEl.removeAttribute('ax-active')
-            activeCellEl.tabIndex = '-1'
           }
         }
       }
