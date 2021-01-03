@@ -3,10 +3,19 @@ import AXElement from './element.mjs'
 const template = window.document.createElement('template')
 template.innerHTML = `
   <style>
+    :host(*) {
+      display: grid;
+      grid-auto-flow: var(--ax-orientation, row);
+      grid-auto-columns: var(--ax-columns, auto minmax(0, 1fr));
+      grid-gap: var(--ax-gap, 0);
+      align-items: center;
+    }
+    [data-el="label"] {
+      cursor: pointer;
+    }
     [data-el="wrapper"] {
       display: grid;
       align-items: center;
-      width: 100px;
       font-family: var(--ax-input-font-family, sans-serif);
       font-size: var(--ax-font-size, medium);
       color: var(--ax-input-color, black);
@@ -15,7 +24,7 @@ template.innerHTML = `
       border: 1px solid;
       border-radius: var(--ax-input-border-radius, 0);
       padding: 4px;
-      width: 100px;
+      width: 100%;
     }
     [data-el="wrapper"]:focus-within {
       outline: 0;

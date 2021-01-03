@@ -16,6 +16,10 @@ window.customElements.define('ax-grid', class extends AXElement {
     this.role = 'grid'
   }
 
+  connectedCallback() {
+    this.querySelector('ax-cell').setAttribute('ax-active', '')
+  }
+
   static get observedAttributes() {
     return [
       'ax-title'
