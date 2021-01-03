@@ -33,6 +33,15 @@ window.customElements.define('ax-textbox', class extends AXElement {
     super(template)
     this._labelEl = this.shadowRoot.querySelector('[data-el="label"]')
     this._inputEl = this.shadowRoot.querySelector('[data-el="input"]')
+    this._resetCursor = () => {
+      window.document.execCommand('selectAll', false, null)
+      window.document.getSelection().collapseToEnd()
+    }
+    this._inputEl.addEventListener('focus', () => {
+      if (window.document.activeElement === this) {
+        this._resetCursor()
+      }
+    })
     this._labelEl.addEventListener('focus', () => {
       this._inputEl.focus()
     })
@@ -62,9 +71,9 @@ window.customElements.define('ax-textbox', class extends AXElement {
       break
       case 'ax-value': {
         this._inputEl.innerText = value
-        this._inputEl.focus()
-        window.document.execCommand('selectAll', false, null)
-        window.document.getSelection().collapseToEnd()
+        if (window.document.activeElement === this) {
+          this._resetCursor()
+        }
       }
       break
       default: return

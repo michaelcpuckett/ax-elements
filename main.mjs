@@ -31,20 +31,10 @@ window.customElements.define('ax-main', class extends AXElement {
       case 'inert': {
         if (value === 'true' || value === 'inert' || value === '') {
           this.ariaHidden = true
-          ;[...this.querySelectorAll('*')].forEach(el => {
-            el.setAttribute('ax-data-tabindex', el.tabIndex)
-            el.tabIndex = '-1'
-          })
-        } else if (!value && value !== '') {
+          this.tabIndex = '-1'
+        } else {
           this.ariaHidden = false
-          ;[...this.querySelectorAll('*')].forEach(el => {
-            if (el.hasAttribute('ax-data-tabindex')) {
-              el.tabIndex = el.getAttribute('ax-data-tabindex')
-              el.removeAttribute('ax-data-tabindex')
-            } else {
-              el.tabIndex = '-1'
-            }
-          })
+          this.removeAttribute('tabindex')
         }
       }
       break

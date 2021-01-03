@@ -145,7 +145,7 @@ window.customElements.define('ax-dialog', class extends AXElement {
               mainEl.setAttribute('inert', '')
             }
           })
-        } else if (!value && value !== '') {
+        } else {
           const mainEl = window.document.querySelector('ax-main, main')
           if (mainEl) {
             mainEl.removeAttribute('inert')

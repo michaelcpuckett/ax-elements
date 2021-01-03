@@ -9,10 +9,6 @@ window.customElements.define('ax-form', class extends AXElement {
   constructor() {
     super(template)
     this.role = 'form'
-    this.addEventListener('submit', () => {
-      const formValues = Object.fromEntries([...this.querySelectorAll('[ax-value]')].map(el => [ el.getAttribute('ax-name'), el.getAttribute('ax-value') ]))
-      console.log(formValues)
-    })
   }
 
   static get observedAttributes() {

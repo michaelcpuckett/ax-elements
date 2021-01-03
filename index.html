@@ -55,7 +55,9 @@
       Forms
     </dt>
     <dd>
-      <ax-form>
+      <ax-form onsubmit="
+        console.log(Object.fromEntries([...this.querySelectorAll('[ax-value]')].map(el => [ el.getAttribute('ax-name'), el.getAttribute('ax-value') ])))
+      ">
         <ax-textbox
           ax-label="First Name"
           ax-name="firstName">
