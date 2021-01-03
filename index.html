@@ -33,6 +33,20 @@
     window.document.querySelector('[data-el="weather"]').innerText = type
     window.document.querySelector('ax-announcement').setAttribute('ax-say', `Today's weather is ${type}.`)
   }
+  new Promise(resolve => {
+    window.addEventListener('DOMContentLoaded', () => {
+      resolve()
+    })
+  }).then(() => {
+    const formEl = window.document.querySelector('[data-el="form"]')
+    formEl.addEventListener('submit', function () {
+      this.style.border = '';
+      this.querySelector('[data-el=form-output]').innerText = JSON.stringify(this.formData)
+    })
+    formEl.addEventListener('invalid', function () {
+      this.style.border = '2px solid red'
+    })
+  })
 </script>
 <body>
 <ax-main ax-title="AX Elements">
@@ -75,18 +89,18 @@
     </dd>
     <dt>Form</dt>
     <dd>
-      <ax-form onsubmit="
-        document.querySelector('[data-el=form-output]').innerText = JSON.stringify(Object.fromEntries([...this.querySelectorAll('[ax-value]')].map(el => [ el.getAttribute('ax-name'), el.getAttribute('ax-value') ])))
-      ">
+      <ax-form data-el="form">
         <ax-textbox
           ax-label="First Name"
           ax-name="firstName"
-          ax-placeholder="John">
+          ax-placeholder="John"
+          ax-required>
         </ax-textbox>
         <ax-textbox
           ax-label="Last Name"
           ax-name="lastName"
-          ax-placeholder="Doe">
+          ax-placeholder="Doe"
+          ax-required>
         </ax-textbox>
         <ax-button ax-submit>
           Submit

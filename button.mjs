@@ -89,7 +89,7 @@ class AXButton extends AXElement {
       case 'ax-submit': {
         if (value || value === '') {
           this._submitHandler = () => {
-            this.closest('ax-form').dispatchEvent(new Event('submit'))
+            this.closest('ax-form').dispatchEvent(new Event('ax-submit'))
           }
           this.addEventListener('click', this._submitHandler)
         } else {

@@ -88,13 +88,11 @@ window.customElements.define('ax-textbox', class AXTextbox extends AXElement {
     this._labelEl = this.shadowRoot.querySelector('[data-el="label"]')
     this._inputEl = this.shadowRoot.querySelector('[data-el="input"]')
     this._placeholderEl = this.shadowRoot.querySelector('[data-el="placeholder"]')
-    this._resetCursor = () => {
-      window.document.execCommand('selectAll', false, null)
-      window.document.getSelection().collapseToEnd()
-    }
     this._inputEl.addEventListener('focus', () => {
       setTimeout(() => {
-        this._resetCursor()
+        if (window.document.activeElement === this) {
+          this._resetCursor()
+        }
       })
     })
     this._labelEl.addEventListener('focus', () => {
@@ -144,10 +142,34 @@ window.customElements.define('ax-textbox', class AXTextbox extends AXElement {
         event.preventDefault()
         const formEl = this.closest('ax-form, form')
         if (formEl) {
-          formEl.dispatchEvent(new Event('submit'))
+          formEl.dispatchEvent(new Event('ax-submit'))
         }
       }
     })
+  }
+
+  _resetCursor() {
+    window.document.execCommand('selectAll', false, null)
+    window.document.getSelection().collapseToEnd()
+  }
+
+  _getValidity() {
+    if (this.hasAttribute('ax-required')) {
+      if (!this.getAttribute('ax-value')) {
+        return false
+      }
+    }
+    return true
+  }
+
+  _checkValidity() {
+    if (this.hasAttribute('ax-required')) {
+      if (this._getValidity()) {
+        this.removeAttribute('ax-internal-invalid')
+      } else {
+        this.setAttribute('ax-internal-invalid', '')
+      }
+    }
   }
 
   connectedCallback() {
@@ -164,7 +186,8 @@ window.customElements.define('ax-textbox', class AXTextbox extends AXElement {
       'ax-value',
       'ax-required',
       'ax-disabled',
-      'ax-placeholder'
+      'ax-placeholder',
+      'ax-internal-invalid'
     ]
   }
   attributeChangedCallback(attributeName, prev, value) {
@@ -184,6 +207,7 @@ window.customElements.define('ax-textbox', class AXTextbox extends AXElement {
         } else {
           this._placeholderEl.removeAttribute('hidden')
         }
+        this._checkValidity()
       }
       break
       case 'ax-placeholder': {
@@ -198,9 +222,30 @@ window.customElements.define('ax-textbox', class AXTextbox extends AXElement {
       case 'ax-disabled': {
         if (value || value === '') {
           this._inputEl.removeAttribute('contenteditable')
+          this._inputEl.setAttribute('aria-disabled', 'true')
+        } else {
+          this._inputEl.setAttribute('contenteditable', '')
+          this._inputEl.removeAttribute('aria-disabled')
         }
       }
       break
+      case 'ax-required': {
+        if (value || value === '') {
+          this._inputEl.setAttribute('aria-required', 'true')
+          this._checkValidity()
+        } else {
+          this._inputEl.removeAttribute('aria-required')
+          this._checkValidity()
+        }
+      }
+      break
+      case 'ax-internal-invalid': {
+        if (value || value === '') {
+          this._inputEl.setAttribute('aria-invalid', 'true')
+        } else {
+          this._inputEl.removeAttribute('aria-invalid')
+        }
+      }
       default: return
     }
   }
