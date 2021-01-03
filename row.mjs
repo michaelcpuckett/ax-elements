@@ -6,6 +6,7 @@ template.innerHTML = `
     :host(*) {
       display: grid;
       grid-auto-flow: column;
+      grid-auto-columns: var(--ax-columns, minmax(0, 1fr));
     }
   </style>
   <slot></slot>

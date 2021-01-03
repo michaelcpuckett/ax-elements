@@ -41,7 +41,9 @@ template.innerHTML = `
       color: var(--background-color, currentColor);
     }
   </style>
-  <slot name="label"></slot>
+  <slot name="label">
+    <slot></slot>
+  </slot>
   <slot name="icon"></slot>
 `
 window.document.body.append(template)
@@ -61,7 +63,6 @@ window.customElements.define('ax-button', class extends AXElement {
     return [
       'ax-label',
       'ax-icon',
-      'ax-hide-label',
       'ax-open-dialog',
       'ax-submit',
       'ax-disabled',
@@ -73,17 +74,11 @@ window.customElements.define('ax-button', class extends AXElement {
       case 'ax-label': {
         if (value) {
           this.ariaLabel = value
-          this.shadowRoot.querySelector('slot[name="label"]').innerHTML = value
+          this.shadowRoot.querySelector('slot[name="label"]').innerHTML = `<slot>value</slot>`
+          this.shadowRoot.querySelector('slot[name="label"]').setAttribute('hidden', '')
         } else {
           this.ariaLabel = null
           this.shadowRoot.querySelector('slot[name="label"]').innerHTML = ''
-        }
-      }
-      break
-      case 'ax-hide-label': {
-        if (value === '') {
-          this.shadowRoot.querySelector('slot[name="label"]').setAttribute('hidden', '')
-        } else {
           this.shadowRoot.querySelector('slot[name="label"]').removeAttribute('hidden')
         }
       }
@@ -134,13 +129,19 @@ window.customElements.define('ax-button', class extends AXElement {
         if (value) {
           if (value.endsWith('.svg')) {
             return this.shadowRoot.querySelector('slot[name="icon"]').innerHTML = `
-              <img src="${value}" role="presentation" />
+              <img
+                height="1em"
+                width="1em"
+                draggable="false"
+                src="${value}"
+                role="presentation"
+              />
             `
           } else {
             switch (value) {
               case 'close': {
                 return this.shadowRoot.querySelector('slot[name="icon"]').innerHTML = `
-                  <svg role="img" fill="none" stroke="currentColor" stroke-width="2"  viewBox="0 0 20 20" height="1em" width="1em">
+                  <svg role="presentation" draggable="false" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 20 20" height="1em" width="1em">
                     <line x1="16" y1="4" x2="4" y2="16"></line>
                     <line x1="4" y1="4" x2="16" y2="16"></line>
                   </svg>

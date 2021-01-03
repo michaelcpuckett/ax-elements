@@ -39,18 +39,16 @@
       Dialog
     </dt>
     <dd>
-      <ax-button
-        ax-label="Add to Cart"
-        ax-open-dialog="cart">
+      <ax-button ax-open-dialog="cart">
+        Add to Cart
       </ax-button>
     </dd>
     <dt>
       Announcement
     </dt>
     <dd>
-      <ax-button
-        ax-label="Check the Weather"
-        onclick="checkWeather()">
+      <ax-button onclick="checkWeather()">
+        Check the Weather
       </ax-button>
       <figure>
         <figcaption>Weather:</figcaption>
@@ -58,7 +56,7 @@
       </figure>
     </dd>
     <dt>
-      Form/Textbox
+      Form/Textbox/Submit Button
     </dt>
     <dd>
       <ax-form onsubmit="
@@ -72,9 +70,8 @@
           ax-label="Last Name"
           ax-name="lastName">
         </ax-textbox>
-        <ax-button
-          ax-label="Submit"
-          ax-submit>
+        <ax-button ax-submit>
+          Submit
         </ax-button>
       </ax-form>
     </dd>
@@ -85,35 +82,41 @@
       <ax-grid ax-title="Tabular Data">
         <ax-row>
           <ax-cell>
-            Content1! / 1
+            Item 1
           </ax-cell>
           <ax-cell>
-            Content1! / 2
+            4.3 / 5 Star Rating
           </ax-cell>
           <ax-cell>
-            Content1! / 3
-          </ax-cell>
-        </ax-row>
-        <ax-row>
-          <ax-cell>
-            Content2! / 1
-          </ax-cell>
-          <ax-cell>
-            Content2! / 2
-          </ax-cell>
-          <ax-cell>
-            Content2! / 3
+            <ax-button ax-open-dialog="cart">
+              Add Item 1 to Cart
+            </ax-button>
           </ax-cell>
         </ax-row>
         <ax-row>
           <ax-cell>
-            Content3! / 1
+            Item 2
           </ax-cell>
           <ax-cell>
-            Content3! / 2
+            4.7 / 5 Star Rating
           </ax-cell>
           <ax-cell>
-            Content3! / 3
+            <ax-button ax-open-dialog="cart">
+              Add Item 2 to Cart
+            </ax-button>
+          </ax-cell>
+        </ax-row>
+        <ax-row>
+          <ax-cell>
+            Item 3
+          </ax-cell>
+          <ax-cell>
+            3.8 / 5 Star Rating
+          </ax-cell>
+          <ax-cell>
+            <ax-button ax-open-dialog="cart">
+              Add Item 3 to Cart
+            </ax-button>
           </ax-cell>
         </ax-row>
       </ax-grid>

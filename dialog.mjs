@@ -80,7 +80,6 @@ template.innerHTML = `
       slot="close"
       ax-icon="close"
       ax-label="Close"
-      ax-hide-label
       data-el="close">
     </ax-button>
     <div
