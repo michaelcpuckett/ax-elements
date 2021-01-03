@@ -37,9 +37,13 @@ window.customElements.define('ax-textbox', class extends AXElement {
       window.document.execCommand('selectAll', false, null)
       window.document.getSelection().collapseToEnd()
     }
+    this._inputEl.addEventListener('focus', () => {
+      setTimeout(() => {
+        this._resetCursor()
+      })
+    })
     this._labelEl.addEventListener('focus', () => {
       this._inputEl.focus()
-      this._resetCursor()
     })
     this._inputEl.addEventListener('input', (event) => {
       if (event.inputType === 'insertParagraph') {
