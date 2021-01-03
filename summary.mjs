@@ -3,6 +3,7 @@ import AXElement from './element.mjs'
 const template = window.document.createElement('template')
 template.innerHTML = `
   <ax-button
+    ax-no-appearance
     data-el="button">
     <slot></slot>
   </ax-button>
@@ -13,7 +14,7 @@ window.customElements.define('ax-summary', class extends AXElement {
     super(template)
     this._buttonEl = this.shadowRoot.querySelector('[data-el="button"]')
     this._buttonEl.addEventListener('click', () => {
-      if (this.hasAttribute('ax-expanded')) {
+      if (this.hasAttribute('ax-internal-expanded')) {
         this._detailsEl.removeAttribute('ax-open')
       } else {
         this._detailsEl.setAttribute('ax-open', '')
@@ -25,12 +26,12 @@ window.customElements.define('ax-summary', class extends AXElement {
   }
   static get observedAttributes() {
     return [
-      'ax-expanded'
+      'ax-internal-expanded'
     ]
   }
   attributeChangedCallback(attributeName, prev, value) {
     switch (attributeName) {
-      case 'ax-expanded': {
+      case 'ax-internal-expanded': {
         if (value || value === '') {
           this._buttonEl.ariaExpanded = 'true'
         } else {

@@ -4,12 +4,17 @@ const template = window.document.createElement('template')
 template.innerHTML = `
   <style>
     :host(*) {
-      --color: var(--ax-color, var(--ax-interactive-color));
-      --background-color: var(--ax-background-color, var(--ax-interactive-background-color));
       cursor: pointer;
       display: inline-grid;
       grid-auto-flow: column;
       align-items: center;
+      -webkit-touch-callout: none;
+      -webkit-user-select: none;
+      user-select: none;
+    }
+    :host(:not([ax-no-appearance])) {
+      --color: var(--ax-color, var(--ax-interactive-color));
+      --background-color: var(--ax-background-color, var(--ax-interactive-background-color));
       padding: var(--padding, 4px 8px);
       color: var(--color, inherit);
       background-color: var(--background-color, transparent);
@@ -20,9 +25,6 @@ template.innerHTML = `
       outline: 0;
       font-size: var(--ax-font-size, inherit);
       line-height: var(--ax-line-height, 1);
-      -webkit-touch-callout: none;
-      -webkit-user-select: none;
-      user-select: none;
     }
     :host([size="small"]) {
       padding: var(--ax-padding, 2px 4px);
@@ -32,10 +34,10 @@ template.innerHTML = `
       padding: var(--ax-padding, 8px 12px);
       font-size: var(--ax-font-size, larger);
     }
-    :host(:focus-visible) {
+    :host(:focus-visible:not([ax-no-appearance])) {
       box-shadow: 0 0 0 4px var(--ax-focus-color, #63ADE5);
     }
-    :host(:hover) {
+    :host(:hover:not([ax-no-appearance])) {
       filter: var(--color, contrast(0) sepia(1) hue-rotate(45deg));
       background-color: var(--color, transparent);
       color: var(--background-color, currentColor);

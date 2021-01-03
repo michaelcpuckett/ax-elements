@@ -10,6 +10,7 @@ template.innerHTML = `
       white-space: nowrap;
       clip: rect(0 0 0 0);
       margin: -1px;
+      overflow: hidden;
     }
   </style>
   <slot></slot>
