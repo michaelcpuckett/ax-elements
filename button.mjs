@@ -4,44 +4,47 @@ const template = window.document.createElement('template')
 template.innerHTML = `
   <style>
     :host(*) {
+      --color: var(--ax-color, var(--ax-interactive-color));
+      --background-color: var(--ax-background-color, var(--ax-interactive-background-color));
       cursor: pointer;
       display: inline-grid;
       grid-auto-flow: column;
       align-items: center;
       padding: var(--padding, 4px 8px);
-      color: var(--color, magenta);
-      background-color: var(--background-color, white);
-      border-color: var(--border-color, currentColor);
-      border-radius: var(--border-radius, 4px);
-      border-width: var(--border-width, 2px);
+      color: var(--color, inherit);
+      background-color: var(--background-color, transparent);
+      border-color: var(--ax-border-color, var(--color));
+      border-radius: var(--ax-border-radius, 0);
+      border-width: var(--ax-border-width, 2px);
       border-style: solid;
       outline: 0;
-      font-size: var(--font-size, inherit);
-      line-height: 1;
+      font-size: var(--ax-font-size, inherit);
+      line-height: var(--ax-line-height, 1);
       -webkit-touch-callout: none;
       -webkit-user-select: none;
       user-select: none;
     }
     :host([size="small"]) {
-      padding: var(--padding, 2px 4px);
-      font-size: var(--font-size, smaller);
+      padding: var(--ax-padding, 2px 4px);
+      font-size: var(--ax-font-size, smaller);
     }
     :host([size="large"]) {
-      padding: var(--padding, 8px 12px);
-      font-size: var(--font-size, larger);
+      padding: var(--ax-padding, 8px 12px);
+      font-size: var(--ax-font-size, larger);
     }
     :host(:focus) {
-      outline: 4px solid var(--focus-color, #63ADE5);
+      outline: 4px solid var(--ax-focus-color, #63ADE5);
     }
     :host(:focus:focus-visible) {
       outline: 0;
     }
     :host(:focus-visible) {
-      box-shadow: 0 0 0 4px var(--focus-color, #63ADE5);
+      box-shadow: 0 0 0 4px var(--ax-focus-color, #63ADE5);
     }
     :host(:hover) {
-      background-color: var(--color, magenta);
-      color: var(--background-color, white);
+      filter: var(--color, contrast(0) sepia(1) hue-rotate(45deg));
+      background-color: var(--color, transparent);
+      color: var(--background-color, currentColor);
     }
   </style>
   <slot name="label"></slot>

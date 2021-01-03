@@ -4,7 +4,11 @@
 <title>AX Elements</title>
 <style>
   body {
-    font-family: sans-serif;
+    color: #098900;
+    --ax-interactive-color: blue;
+    --ax-interactive-background-color: white;
+    --ax-border-radius: 10px;
+    --ax-input-border-radius: 5px;
   }
 </style>
 <script type="module">
@@ -14,6 +18,9 @@
   import './announcement.mjs'
   import './form.mjs'
   import './textbox.mjs'
+  import './grid.mjs'
+  import './row.mjs'
+  import './cell.mjs'
   window.checkWeather = function() {
     const type = [
       'Dreary',
@@ -76,20 +83,38 @@
       Grid
     </dt>
     <dd>
-      <ax-grid>
+      <ax-grid ax-title="Tabular Data">
         <ax-row>
           <ax-cell>
-            Content1!
+            Content1! / 1
+          </ax-cell>
+          <ax-cell>
+            Content1! / 2
+          </ax-cell>
+          <ax-cell>
+            Content1! / 3
           </ax-cell>
         </ax-row>
         <ax-row>
           <ax-cell>
-            Content2!
+            Content2! / 1
+          </ax-cell>
+          <ax-cell>
+            Content2! / 2
+          </ax-cell>
+          <ax-cell>
+            Content2! / 3
           </ax-cell>
         </ax-row>
         <ax-row>
           <ax-cell>
-            Content3!
+            Content3! / 1
+          </ax-cell>
+          <ax-cell>
+            Content3! / 2
+          </ax-cell>
+          <ax-cell>
+            Content3! / 3
           </ax-cell>
         </ax-row>
       </ax-grid>
@@ -127,10 +152,10 @@
   ax-name="cart"
   ax-title="Shopping Cart"
   hidden>
-  <p slot="body">
+  <p>
     I'm the content!
   </p>
-  <p slot="body">
+  <p>
     I too am content inside of a dialog!!
     <a href="#">??</a>
   </p>

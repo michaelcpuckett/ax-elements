@@ -24,7 +24,7 @@ template.innerHTML = `
       width: 100%;
       top: 0;
       left: 0;
-      background-color: var(--overlay-color, rgba(0, 0, 0, .667));
+      background-color: var(--ax-overlay-color, rgba(0, 0, 0, .667));
     }
     [data-el="dialog"] {
       display: grid;
@@ -35,13 +35,15 @@ template.innerHTML = `
       grid-gap: 12px;
       align-self: center;
       justify-self: center;
-      padding: var(--padding, 20px);
-      max-height: min(var(--max-height, 500px), 100%);
-      width: min(var(--width, 500px), 100%);
-      background-color: var(--background-color, white);
-      border-color: var(--border-color, magenta);
-      border-radius: var(--border-radius, 4px);
-      border-width: var(--border-width, 2px);
+      padding: var(--ax-padding, 1em);
+      max-height: var(--ax-max-height, 50vh);
+      max-height: min(var(--ax-max-height, 50vh), 100%);
+      width: var(--ax-width, 50vw);
+      width: clamp(320px, var(--ax-width, 50vw), 100%);
+      background-color: var(--ax-background-color, white);
+      border-color: var(--ax-border-color, currentColor);
+      border-radius: var(--ax-border-radius, 0);
+      border-width: var(--ax-border-width, 2px);
       border-style: solid;
       outline: 0;
     }
@@ -55,19 +57,6 @@ template.innerHTML = `
     }
     [data-el="body"] {
       grid-column: 1 / 3;
-    }
-
-    slot[name="body"]::slotted(div),
-    slot[name="body"]::slotted(br),
-    slot[name="body"]::slotted(h1),
-    slot[name="body"]::slotted(main),
-    slot[name="body"]::slotted(section),
-    slot[name="body"]::slotted(article),
-    slot[name="body"]::slotted(nav),
-    slot[name="body"]::slotted(aside),
-    slot[name="body"]::slotted(header),
-    slot[name="body"]::slotted(footer) {
-      display: none;
     }
   </style>
   <div
@@ -98,7 +87,7 @@ template.innerHTML = `
       data-el="body"
       role="presentation"
       id="body">
-      <slot name="body"></slot>
+      <slot></slot>
     </div>
   </div>
 `
