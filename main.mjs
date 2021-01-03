@@ -29,7 +29,7 @@ window.customElements.define('ax-main', class extends AXElement {
       }
       break
       case 'inert': {
-        if (value === 'true' || value === 'inert' || value === '') {
+        if (value || value === '') {
           this.ariaHidden = true
           this.tabIndex = '-1'
         } else {

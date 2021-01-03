@@ -11,17 +11,29 @@ export default class AXElement extends HTMLElement {
   set role(role) {
     this.setAttribute('role', role)
   }
+  get ariaHidden() {
+    return this.getAttribute('aria-hidden')
+  }
+  set ariaHidden(ariaHidden) {
+    this.setAttribute('aria-hidden', ariaHidden)
+  }
   get ariaDisabled() {
     return this.getAttribute('aria-disabled')
   }
   set ariaDisabled(ariaDisabled) {
     this.setAttribute('aria-disabled', ariaDisabled)
   }
-  get ariaHidden() {
-    return this.getAttribute('aria-hidden')
+  get ariaPressed() {
+    return this.getAttribute('aria-pressed')
   }
-  set ariaHidden(ariaHidden) {
-    this.setAttribute('aria-hidden', ariaHidden)
+  set ariaPressed(ariaPressed) {
+    this.setAttribute('aria-pressed', ariaPressed)
+  }
+  get ariaExpanded() {
+    return this.getAttribute('aria-expanded')
+  }
+  set ariaExpanded(ariaExpanded) {
+    this.setAttribute('aria-expanded', ariaExpanded)
   }
   get ariaModal() {
     return this.getAttribute('aria-modal')

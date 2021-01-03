@@ -13,6 +13,8 @@
 <script type="module">
   import './main.mjs'
   import './button.mjs'
+  import './details.mjs'
+  import './summary.mjs'
   import './dialog.mjs'
   import './announcement.mjs'
   import './form.mjs'
@@ -35,6 +37,31 @@
 <body>
 <ax-main ax-title="AX Elements">
   <dl aria-label="Examples">
+    <dt>
+      Button
+    </dt>
+    <dd>
+      <ax-button onclick="alert('Button!')">
+        Click Me
+      </ax-button>
+    </dd>
+    <dt>
+      Details/Summary (Expandable)
+    </dt>
+    <dd>
+      <ax-details ax-open>
+        <ax-summary>
+          UI Designer
+        </ax-summary>
+        <p>A digital artist creates the look and feel for computer programs.</p>
+      </ax-details>
+      <ax-details>
+        <ax-summary>
+          Software Engineer
+        </ax-summary>
+        <p>A software engineer creates computer programs.</p>
+      </ax-details>
+    </dd>
     <dt>
       Dialog
     </dt>

@@ -124,7 +124,7 @@ window.customElements.define('ax-dialog', class extends AXElement {
   attributeChangedCallback(attributeName, prev, value) {
     switch (attributeName) {
       case 'ax-open': {
-        if (value === 'true' || value === 'open' || value === '') {
+        if (value || value === '') {
           this._priorFocus = window.document.activeElement
           setTimeout(() => {
             this.shadowRoot.querySelector('[data-el="close"]').focus()

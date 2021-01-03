@@ -84,12 +84,12 @@ window.customElements.define('ax-button', class extends AXElement {
       }
       break
       case 'ax-submit': {
-        if (value === 'true' || value === '') {
+        if (value || value === '') {
           this._submitHandler = () => {
             this.closest('ax-form').dispatchEvent(new Event('submit'))
           }
           this.addEventListener('click', this._submitHandler)
-        } else if (!value) {
+        } else {
           if (this._submitHandler) {
             this.removeEventListener('click', this._submitHandler)
             this._submitHandler = null
@@ -99,7 +99,7 @@ window.customElements.define('ax-button', class extends AXElement {
       break
       case 'ax-disabled':
       case 'disabled': {
-        if (value === '') {
+        if (value || value === '') {
           this.ariaDisabled = true
           this.tabIndex = '-1'
         } else {
