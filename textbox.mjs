@@ -37,11 +37,6 @@ window.customElements.define('ax-textbox', class extends AXElement {
       window.document.execCommand('selectAll', false, null)
       window.document.getSelection().collapseToEnd()
     }
-    this._inputEl.addEventListener('focus', () => {
-      if (window.document.activeElement === this) {
-        this._resetCursor()
-      }
-    })
     this._labelEl.addEventListener('focus', () => {
       this._inputEl.focus()
     })
