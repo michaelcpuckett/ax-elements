@@ -39,10 +39,14 @@ window.customElements.define('ax-details', class extends AXElement {
       case 'ax-open': {
         if (value || value === '') {
           this._regionEl.removeAttribute('hidden')
-          this._summaryEl.setAttribute('ax-expanded', '')
+          if (this._summaryEl) {
+           this._summaryEl.setAttribute('ax-expanded', '')
+          }
         } else {
           this._regionEl.setAttribute('hidden', '')
-          this._summaryEl.removeAttribute('ax-expanded')
+          if (this._summaryEl) {
+            this._summaryEl.removeAttribute('ax-expanded')
+          }
         }
       }
       break
