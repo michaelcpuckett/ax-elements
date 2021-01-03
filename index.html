@@ -40,11 +40,7 @@
   }).then(() => {
     const formEl = window.document.querySelector('[data-el="form"]')
     formEl.addEventListener('submit', function () {
-      this.style.border = '';
       this.querySelector('[data-el=form-output]').innerText = JSON.stringify(this.formData)
-    })
-    formEl.addEventListener('invalid', function () {
-      this.style.border = '2px solid red'
     })
   })
 </script>

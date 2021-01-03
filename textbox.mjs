@@ -57,6 +57,12 @@ template.innerHTML = `
       color: var(--ax-placeholder-color, gray);
       pointer-events: none;
     }
+    [data-el="validation"]:not([hidden]) {
+      display: block;
+    }
+    [data-el="validation"] {
+      color: red;
+    }
   </style>
   <span
     id="label"
@@ -77,8 +83,15 @@ template.innerHTML = `
       tabindex="0"
       role="textbox"
       aria-labelledby="label"
+      aria-describedby="validation"
       data-el="input">
     </span>
+  </span>
+  <span
+    id="validation"
+    hidden
+    aria-hidden="true"
+    data-el="validation">
   </span>
 `
 window.document.body.append(template)
@@ -88,6 +101,7 @@ window.customElements.define('ax-textbox', class AXTextbox extends AXElement {
     this._labelEl = this.shadowRoot.querySelector('[data-el="label"]')
     this._inputEl = this.shadowRoot.querySelector('[data-el="input"]')
     this._placeholderEl = this.shadowRoot.querySelector('[data-el="placeholder"]')
+    this._validationEl = this.shadowRoot.querySelector('[data-el="validation"]')
     this._inputEl.addEventListener('focus', () => {
       setTimeout(() => {
         if (window.document.activeElement === this) {
@@ -136,6 +150,7 @@ window.customElements.define('ax-textbox', class AXTextbox extends AXElement {
     })
     this._inputEl.addEventListener('input', () => {
       this.setAttribute('ax-value', this._inputEl.innerText)
+      this._validationEl.setAttribute('hidden', 'hidden')
     })
     this._inputEl.addEventListener('keydown', event => {
       if (event.key === 'Enter') {
@@ -146,6 +161,9 @@ window.customElements.define('ax-textbox', class AXTextbox extends AXElement {
         }
       }
     })
+    this.addEventListener('invalid', () => {
+      this._validationEl.removeAttribute('hidden')
+    })
   }
 
   _resetCursor() {
@@ -153,22 +171,24 @@ window.customElements.define('ax-textbox', class AXTextbox extends AXElement {
     window.document.getSelection().collapseToEnd()
   }
 
-  _getValidity() {
+  _getValidationMessage() {
+    const value = (this.getAttribute('ax-value') || '').trim()
     if (this.hasAttribute('ax-required')) {
-      if (!this.getAttribute('ax-value')) {
-        return false
+      if (!value.length) {
+        return 'This field is required.'
       }
     }
-    return true
+    return ''
   }
 
   _checkValidity() {
-    if (this.hasAttribute('ax-required')) {
-      if (this._getValidity()) {
-        this.removeAttribute('ax-internal-invalid')
-      } else {
-        this.setAttribute('ax-internal-invalid', '')
-      }
+    const validationMessage = this._getValidationMessage()
+    if (validationMessage) {
+      this.setAttribute('ax-internal-invalid', '')
+      this._validationEl.innerText = validationMessage
+    } else {
+      this.removeAttribute('ax-internal-invalid')
+      this._validationEl.innerText = ''
     }
   }
 
@@ -246,6 +266,7 @@ window.customElements.define('ax-textbox', class AXTextbox extends AXElement {
           this._inputEl.removeAttribute('aria-invalid')
         }
       }
+      break
       default: return
     }
   }
