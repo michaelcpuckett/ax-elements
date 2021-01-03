@@ -1,19 +1,11 @@
-import AXElement from './element.mjs'
+import AXButton from './button.mjs'
 
-const template = window.document.createElement('template')
-template.innerHTML = `
-  <ax-button
-    ax-no-appearance
-    data-el="button">
-    <slot></slot>
-  </ax-button>
-`
-window.document.body.append(template)
-window.customElements.define('ax-summary', class extends AXElement {
+window.customElements.define('ax-summary', class extends AXButton {
   constructor() {
-    super(template)
-    this._buttonEl = this.shadowRoot.querySelector('[data-el="button"]')
-    this._buttonEl.addEventListener('click', () => {
+    super()
+    this.setAttribute('ax-no-appearance', '')
+    this.ariaExpanded = 'false'
+    this.addEventListener('click', () => {
       if (this.hasAttribute('ax-internal-expanded')) {
         this._detailsEl.removeAttribute('ax-open')
       } else {
@@ -33,9 +25,9 @@ window.customElements.define('ax-summary', class extends AXElement {
     switch (attributeName) {
       case 'ax-internal-expanded': {
         if (value || value === '') {
-          this._buttonEl.ariaExpanded = 'true'
+          this.ariaExpanded = 'true'
         } else {
-          this._buttonEl.ariaExpanded = 'false'
+          this.ariaExpanded = 'false'
         }
       }
       break

@@ -12,6 +12,7 @@ template.innerHTML = `
     hidden
     tabindex="-1"
     role="region"
+    id="region"
     data-el="region">
     <slot></slot>
   </div>

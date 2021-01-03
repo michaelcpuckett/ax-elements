@@ -5,9 +5,6 @@ template.innerHTML = `
   <style>
     :host(*) {
       cursor: pointer;
-      display: inline-grid;
-      grid-auto-flow: column;
-      align-items: center;
       -webkit-touch-callout: none;
       -webkit-user-select: none;
       user-select: none;
@@ -15,6 +12,9 @@ template.innerHTML = `
     :host(:not([ax-no-appearance])) {
       --color: var(--ax-color, var(--ax-interactive-color));
       --background-color: var(--ax-background-color, var(--ax-interactive-background-color));
+      display: inline-grid;
+      grid-auto-flow: column;
+      align-items: center;
       padding: var(--padding, 4px 8px);
       color: var(--color, inherit);
       background-color: var(--background-color, transparent);
@@ -49,13 +49,14 @@ template.innerHTML = `
   <slot name="icon"></slot>
 `
 window.document.body.append(template)
-window.customElements.define('ax-button', class extends AXElement {
+class AXButton extends AXElement {
   constructor() {
     super(template)
     this.tabIndex = '0'
     this.role = 'button'
-    this.addEventListener('keydown', ({ key }) => {
-      if (key === 'Enter' || key === ' ') {
+    this.addEventListener('keydown', event => {
+      if (['Enter', ' '].includes(event.key)) {
+        event.preventDefault()
         this.dispatchEvent(new CustomEvent('click'))
       }
     })
@@ -159,4 +160,7 @@ window.customElements.define('ax-button', class extends AXElement {
       default: return
     }
   }
-})
+}
+window.customElements.define('ax-button', AXButton)
+
+export default AXButton
