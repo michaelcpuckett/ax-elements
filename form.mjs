@@ -57,7 +57,7 @@ window.customElements.define('ax-form', class extends AXElement {
             Object.entries(this.formData).forEach(([ name, value ]) => {
               url.searchParams.set(name, value)
             })
-            this.tabIndex = '-1'
+            this.tabIndex = '-1' // TODO: Show invisible overlay to prevent mouse click?
             this.focus()
             fetch(`${url}`, {
               method,
