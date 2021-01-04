@@ -102,6 +102,7 @@ window.customElements.define('ax-textbox', class AXTextbox extends AXElement {
     this._inputEl = this.shadowRoot.querySelector('[data-el="input"]')
     this._placeholderEl = this.shadowRoot.querySelector('[data-el="placeholder"]')
     this._validationEl = this.shadowRoot.querySelector('[data-el="validation"]')
+    this._inputEl.innerText = this.getAttribute('ax-value') || ''
     this._inputEl.addEventListener('focus', () => {
       setTimeout(() => {
         if (window.document.activeElement === this) {

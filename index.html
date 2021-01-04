@@ -16,6 +16,7 @@
   import './details.mjs'
   import './summary.mjs'
   import './dialog.mjs'
+  import './alert.mjs'
   import './announcement.mjs'
   import './form.mjs'
   import './textbox.mjs'
@@ -38,13 +39,6 @@
       resolve()
     })
   }).then(() => {
-    const formEl = window.document.querySelector('[data-el="form"]')
-    formEl.addEventListener('load', function (e) {
-      this.querySelector('[data-el=form-output]').innerText = JSON.stringify(e.detail)
-    })
-    formEl.addEventListener('error', function (e) {
-      this.querySelector('[data-el=form-output]').innerText = e.detail
-    })
   })
 </script>
 <body>
@@ -89,7 +83,12 @@
       <ax-form
         action="example-success-response.json"
         method="GET"
-        data-el="form">
+        onload="(function handleLoad (event) {
+          this.querySelector('[data-el=form-output]').innerText = JSON.stringify(this.result)
+        }.bind(this))(event)"
+        onerror="(function handleError (event) {
+          this.querySelector('[data-el=form-error]').innerText = event.error
+        }.bind(this))(event)">
         <ax-textbox
           ax-label="First Name"
           ax-name="firstName"
@@ -105,7 +104,10 @@
         <ax-button ax-submit>
           Submit
         </ax-button>
-        <output data-el="form-output" />
+        <output data-el="form-error"></output>
+        <div slot="loaded">
+          Complete! Response: <output data-el="form-output"></output>
+        </div>
       </ax-form>
     </dd>
     <dt>
@@ -120,9 +122,19 @@
       Alert
     </dt>
     <dd>
-      <ax-form>
-        <ax-textbox ax-label="Example"></ax-textbox>
-        <ax-button ax-open-dialog="saved">
+      <ax-form
+        action="example-success-response.json"
+        method="GET"
+        onload="(function handleLoad(event) {
+          event.preventDefault()
+          document.querySelector('ax-alert[ax-name=saved]').setAttribute('ax-open', '')
+        })(event)">
+        <ax-textbox
+          ax-label="Message"
+          ax-value="Wow..."
+          ax-required>
+        </ax-textbox>
+        <ax-button ax-submit>
           Save
         </ax-button>
       </ax-form>
@@ -214,6 +226,7 @@
     </dd>
   </dl>
 </ax-main>
+
 <ax-dialog
   ax-name="cart"
   ax-title="Shopping Cart"
@@ -222,8 +235,24 @@
     I'm the content!
   </p>
   <p>
-    I too am content inside of a dialog!!
+    I too am content inside of a modal dialog!!
     <a href="#">??</a>
   </p>
 </ax-dialog>
+
+<ax-alertdialog
+  ax-name="error"
+  ax-title="Error!"
+  hidden>
+  <p>
+    I'm modal alert dialog!
+  </p>
+</ax-alertdialog>
+
+<ax-alert
+  ax-name="saved"
+  hidden>
+  Saved!
+</ax-alert>
+
 <ax-announcement />

@@ -7,13 +7,25 @@ template.innerHTML = `
       display: block;
     }
   </style>
-  <slot></slot>
+  <div
+    data-el="unloaded"
+    role="presentation">
+    <slot></slot>
+  </div>
+  <div
+    data-el="loaded"
+    role="presentation"
+    hidden>
+    <slot name="loaded"></slot>
+  </div>
 `
 window.document.body.append(template)
 window.customElements.define('ax-form', class extends AXElement {
   constructor() {
     super(template)
     this.role = 'form'
+    this._unloadedEl = this.shadowRoot.querySelector('[data-el="unloaded"]')
+    this._loadedEl = this.shadowRoot.querySelector('[data-el="loaded"]')
     this.addEventListener('ax-submit', () => {
       const allFieldEls = [...this.querySelectorAll('[ax-value]')]
       const fieldsElsWithValidation = [...this.querySelectorAll('[ax-required]')]
@@ -45,6 +57,8 @@ window.customElements.define('ax-form', class extends AXElement {
             Object.entries(this.formData).forEach(([ name, value ]) => {
               url.searchParams.set(name, value)
             })
+            this.tabIndex = '-1'
+            this.focus()
             fetch(`${url}`, {
               method,
               headers: {
@@ -62,14 +76,23 @@ window.customElements.define('ax-form', class extends AXElement {
               }
             })
             .then(result => {
-              this.dispatchEvent(new CustomEvent('load', {
-                detail: result
-              }))
+              this.result = result
+              const loadEvent = new Event('load', {
+                cancelable: true
+              })
+              this.dispatchEvent(loadEvent)
+              if (!loadEvent.defaultPrevented) {
+                this._unloadedEl.setAttribute('hidden', '')
+                this._loadedEl.removeAttribute('hidden')
+              }
             })
             .catch(error => {
-              this.dispatchEvent(new CustomEvent('error', {
-                detail: error
+              this.dispatchEvent(new ErrorEvent('error', {
+                error
               }))
+            })
+            .then(() => {
+              this.removeAttribute('tabindex')
             })
           }
         }
