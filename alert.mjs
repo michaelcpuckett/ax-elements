@@ -10,8 +10,19 @@ template.innerHTML = `
     :host([ax-open]) {
       display: grid;
       position: fixed;
-      right: 0;
-      top: 0;
+      left: 0;
+      bottom: 0;
+      width: 100%;
+      text-align: center;
+      justify-content: center;
+      grid-template-columns: 100%;
+      cursor: pointer;
+    }
+    [data-el="content"] {
+      background: rgba(0, 0, 0, .667);
+      color: white;
+      padding: 20px;
+      font-size: larger;
     }
   </style>
   <div
