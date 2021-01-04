@@ -3,7 +3,7 @@ import AXElement from './element.mjs'
 const template = window.document.createElement('template')
 template.innerHTML = `
   <style>
-    :host([ax-say]) {
+    :host(*) {
       position: absolute;
       width: 1px;
       height: 1px;

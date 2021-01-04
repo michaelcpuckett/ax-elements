@@ -39,6 +39,7 @@ template.innerHTML = `
       overflow: scroll;
     }
     [data-el="dialog"] {
+      z-index: 1;
       display: grid;
       grid-column: 1 / -1;
       grid-row: 1 / -1;

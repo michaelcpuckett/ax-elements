@@ -1,39 +1,28 @@
-import AXElement from './element.mjs'
+import AXRegion from './region.mjs'
 
-const template = window.document.createElement('template')
-template.innerHTML = `
-  <h1
-    id="title"
-    data-el="title">
-  </h1>
-  <slot></slot>
-`
-window.document.body.append(template)
-window.customElements.define('ax-main', class extends AXElement {
+export default class AXMain extends AXRegion {
   constructor() {
-    super(template)
-    this.role = 'main'
-    this.ariaLabelledBy = 'title'
+    super()
+    this._regionEl.setAttribute('role', 'main')
   }
 
   static get observedAttributes() {
     return [
-      'ax-title',
+      ...super.prototype.constructor.observedAttributes,
       'inert'
     ]
   }
+
   attributeChangedCallback(attributeName, prev, value) {
+    super.attributeChangedCallback(attributeName, prev, value)
+
     switch (attributeName) {
-      case 'ax-title': {
-        this.shadowRoot.querySelector('[data-el="title"]').innerText = value
-      }
-      break
       case 'inert': {
         if (value || value === '') {
-          this.ariaHidden = true
-          this.tabIndex = '-1'
+          this._regionEl.setAttribute('aria-hidden', 'true')
+          this.setAttribute('tabindex', '-1')
         } else {
-          this.ariaHidden = false
+          this._regionEl.removeAttribute('aria-hidden')
           this.removeAttribute('tabindex')
         }
       }
@@ -41,4 +30,6 @@ window.customElements.define('ax-main', class extends AXElement {
       default: return
     }
   }
-})
+}
+
+window.customElements.define('ax-main', AXMain)
