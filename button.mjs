@@ -2,7 +2,7 @@ import AXElement from './element.mjs'
 
 const template = window.document.createElement('template')
 template.innerHTML = `
-  <style>
+  <style hidden>
     :host(*) {
       cursor: pointer;
       -webkit-touch-callout: none;
