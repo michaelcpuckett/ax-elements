@@ -33,7 +33,46 @@ window.customElements.define('ax-form', class extends AXElement {
               el.getAttribute('ax-value') || ''
             ])
         )
-        this.dispatchEvent(new Event('submit'))
+        const submitEvent = new Event('submit', {
+          cancelable: true
+        })
+        this.dispatchEvent(submitEvent)
+        if (!submitEvent.defaultPrevented) {
+          const actionURL = this.getAttribute('action')
+          if (actionURL) {
+            const method = this.getAttribute('method') || 'POST'
+            const url = new URL(actionURL, window.document.location)
+            Object.entries(this.formData).forEach(([ name, value ]) => {
+              url.searchParams.set(name, value)
+            })
+            fetch(`${url}`, {
+              method,
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              ...method === 'POST' ? {
+                body: JSON.stringify(this.formData)
+              } : null
+            })
+            .then(res => {
+              if (res.ok) {
+                return res.json()
+              } else {
+                throw new Error(res.status)
+              }
+            })
+            .then(result => {
+              this.dispatchEvent(new CustomEvent('load', {
+                detail: result
+              }))
+            })
+            .catch(error => {
+              this.dispatchEvent(new CustomEvent('error', {
+                detail: error
+              }))
+            })
+          }
+        }
       }
     })
   }

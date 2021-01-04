@@ -39,8 +39,11 @@
     })
   }).then(() => {
     const formEl = window.document.querySelector('[data-el="form"]')
-    formEl.addEventListener('submit', function () {
-      this.querySelector('[data-el=form-output]').innerText = JSON.stringify(this.formData)
+    formEl.addEventListener('load', function (e) {
+      this.querySelector('[data-el=form-output]').innerText = JSON.stringify(e.detail)
+    })
+    formEl.addEventListener('error', function (e) {
+      this.querySelector('[data-el=form-output]').innerText = e.detail
     })
   })
 </script>
@@ -80,12 +83,13 @@
     </dt>
     <dd>
       <ax-textbox ax-label="Example"></ax-textbox>
-      <!-- See Console for Error -->
-      <ax-textbox></ax-textbox>
     </dd>
     <dt>Form</dt>
     <dd>
-      <ax-form data-el="form">
+      <ax-form
+        action="example-success-response.json"
+        method="GET"
+        data-el="form">
         <ax-textbox
           ax-label="First Name"
           ax-name="firstName"
@@ -117,7 +121,7 @@
     </dt>
     <dd>
       <ax-form>
-        <ax-textbox />
+        <ax-textbox ax-label="Example"></ax-textbox>
         <ax-button ax-open-dialog="saved">
           Save
         </ax-button>
