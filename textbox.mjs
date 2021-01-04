@@ -20,13 +20,19 @@ template.innerHTML = `
       font-family: var(--ax-input-font-family, sans-serif);
       font-size: var(--ax-font-size, medium);
       color: var(--ax-input-color, black);
-      height: 1em;
-      overflow: hidden;
       border: 1px solid;
       border-radius: var(--ax-input-border-radius, 0);
       padding: var(--ax-input-padding, 4px);
       width: 100%;
       position: relative;
+      height: 1em;
+      overflow: hidden;
+    }
+    :host([ax-multiline]) [data-el="wrapper"] {
+      height: auto;
+      min-height: 4em;
+      resize: both;
+      align-items: flex-start;
     }
     [data-el="wrapper"]:focus-within {
       outline: 0;
@@ -40,11 +46,21 @@ template.innerHTML = `
       grid-column: 1 / -1;
       grid-row: 1 / -1;
     }
+    :host([ax-multiline]) [data-el="input"] {
+      display: grid;
+      white-space: pre;
+      resize: auto;
+      height: 100%;
+      align-items: flex-start;
+    }
     [data-el="input"]:focus {
       outline: 0;
     }
     [data-el="input"] * {
       display: none;
+    }
+    :host([ax-multiline]) [data-el="input"] br {
+      display: block;
     }
     [data-el="placeholder"]:not([hidden]) {
       display: inline-grid;
@@ -56,6 +72,9 @@ template.innerHTML = `
       align-items: center;
       color: var(--ax-placeholder-color, gray);
       pointer-events: none;
+    }
+    :host([ax-multiline]) [data-el="wrapper"] {
+      white-space: pre;
     }
     [data-el="validation"]:not([hidden]) {
       display: block;
@@ -156,9 +175,15 @@ window.customElements.define('ax-textbox', class AXTextbox extends AXElement {
     this._inputEl.addEventListener('keydown', event => {
       if (event.key === 'Enter') {
         event.preventDefault()
-        const formEl = this.closest('ax-form, form')
-        if (formEl) {
-          formEl.dispatchEvent(new Event('ax-submit'))
+        if (this.hasAttribute('ax-multiline')) {
+          this._inputEl.innerText = (this.getAttribute('ax-value') || '') + '\n\n'
+          this.setAttribute('ax-value', (this.getAttribute('ax-value') || '') + '\n\n')
+          this._resetCursor()
+        } else {
+          const formEl = this.closest('ax-form, form')
+          if (formEl) {
+            formEl.dispatchEvent(new Event('ax-submit'))
+          }
         }
       }
     })
@@ -208,6 +233,7 @@ window.customElements.define('ax-textbox', class AXTextbox extends AXElement {
       'ax-required',
       'ax-disabled',
       'ax-placeholder',
+      'ax-multiline',
       'ax-internal-invalid'
     ]
   }
@@ -257,6 +283,14 @@ window.customElements.define('ax-textbox', class AXTextbox extends AXElement {
         } else {
           this._inputEl.removeAttribute('aria-required')
           this._checkValidity()
+        }
+      }
+      break
+      case 'ax-multiline': {
+        if (value || value === '') {
+          this._inputEl.setAttribute('aria-multiline', 'true')
+        } else {
+          this._inputEl.removeAttribute('aria-multiline')
         }
       }
       break
