@@ -29,8 +29,10 @@
 <script type="module">
   import './region.mjs'
   import './main.mjs'
+  import './section.mjs'
   import './article.mjs'
   import './button.mjs'
+  import './link.mjs'
   import './details.mjs'
   import './summary.mjs'
   import './dialog.mjs'
@@ -41,6 +43,9 @@
   import './grid.mjs'
   import './row.mjs'
   import './cell.mjs'
+  import './tabs.mjs'
+  import './tablist.mjs'
+  import './tab.mjs'
   window.checkWeather = function() {
     const type = [
       'Dreary',
@@ -63,6 +68,13 @@
 </script>
 <body role="document" aria-busy="true">
 <ax-main ax-title="AX Elements" ax-cloak>
+  <ax-article ax-title="Regions">
+    <ax-section ax-title="Section">
+      <ax-article ax-title="Article">
+        <p>Content</p>
+      </ax-article>
+    </ax-article>
+  </ax-article>
   <ax-article ax-title="Button">
     <ax-button
       onclick="(function handleClick () {
@@ -74,6 +86,12 @@
     <output data-el="button-output">
       0
     </output>
+  </ax-article>
+  <ax-article ax-title="Link">
+    Sometimes you need a hyperlink that goes to
+    <ax-link ax-url="https://www.google.com">
+      Google
+    </ax-link>
   </ax-article>
   <ax-article ax-title="Details/Summary">
     <ax-details>
