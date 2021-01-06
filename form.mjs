@@ -50,9 +50,9 @@ window.customElements.define('ax-form', class extends AXElement {
         })
         this.dispatchEvent(submitEvent)
         if (!submitEvent.defaultPrevented) {
-          const actionURL = this.getAttribute('action')
+          const actionURL = this.getAttribute('ax-action')
           if (actionURL) {
-            const method = this.getAttribute('method') || 'POST'
+            const method = this.getAttribute('ax-method') || 'POST'
             const url = new URL(actionURL, window.document.location)
             Object.entries(this.formData).forEach(([ name, value ]) => {
               url.searchParams.set(name, value)

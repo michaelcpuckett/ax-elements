@@ -1,274 +1,328 @@
 <!doctype html>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>AX Elements</title>
-<style>
-  :root {
-    --ax-text-color: black;
-    --ax-interactive-color: blue;
-    --ax-interactive-background-color: white;
-    --ax-border-radius: 8px;
-    --ax-input-border-radius: 4px;
-  }
-  [ax-cloak] {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    white-space: nowrap;
-    clip: rect(0 0 0 0);
-    margin: -1px;
-    overflow: hidden;
-  }
-  body {
-    transition: .125s opacity ease-in;
-  }
-  body[aria-busy="true"] {
-    opacity: 0;
-  }
-</style>
-<script type="module">
-  import './region.mjs'
-  import './main.mjs'
-  import './section.mjs'
-  import './article.mjs'
-  import './button.mjs'
-  import './link.mjs'
-  import './details.mjs'
-  import './summary.mjs'
-  import './dialog.mjs'
-  import './alert.mjs'
-  import './announcement.mjs'
-  import './form.mjs'
-  import './textbox.mjs'
-  import './grid.mjs'
-  import './row.mjs'
-  import './cell.mjs'
-  import './tabs.mjs'
-  import './tablist.mjs'
-  import './tab.mjs'
-  window.checkWeather = function() {
-    const type = [
-      'Dreary',
-      'Sunny',
-      'Pleasant',
-      'Hot',
-      'Snowing'
-    ][Math.round((Math.random() * 4))]
-    window.document.querySelector('[data-el="weather"]').innerText = type
-    window.document.querySelector('ax-announcement').setAttribute('ax-say', `Today's weather is ${type}.`)
-  }
-  new Promise(resolve => {
-    window.addEventListener('DOMContentLoaded', () => {
-      resolve()
-    })
-  }).then(() => {
-    window.document.body.removeAttribute('aria-busy')
-    ;[...window.document.querySelectorAll('[ax-cloak]')].forEach(el => el.removeAttribute('ax-cloak'))
-  })
-</script>
-<body role="document" aria-busy="true">
-<ax-main ax-title="AX Elements" ax-cloak>
-  <ax-article ax-title="Regions">
-    <ax-section ax-title="Section">
-      <ax-article ax-title="Article">
-        <p>Content</p>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>AX Elements</title>
+    <style>
+      :root {
+        --ax-text-color: black;
+        --ax-interactive-color: blue;
+        --ax-interactive-background-color: white;
+        --ax-border-radius: 8px;
+        --ax-input-border-radius: 4px;
+      }
+      [ax-cloak] {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        white-space: nowrap;
+        clip: rect(0 0 0 0);
+        margin: -1px;
+        overflow: hidden;
+      }
+      body {
+        transition: .125s opacity ease-in;
+      }
+      body[aria-busy="true"] {
+        opacity: 0;
+      }
+    </style>
+    <script type="module">
+      import './region.mjs'
+      import './main.mjs'
+      import './section.mjs'
+      import './article.mjs'
+      import './button.mjs'
+      import './link.mjs'
+      import './details.mjs'
+      import './summary.mjs'
+      import './dialog.mjs'
+      import './alert.mjs'
+      import './announcement.mjs'
+      import './form.mjs'
+      import './textbox.mjs'
+      import './grid.mjs'
+      import './row.mjs'
+      import './cell.mjs'
+      import './tabs.mjs'
+      import './tablist.mjs'
+      import './tab.mjs'
+      window.checkWeather = function() {
+        const type = [
+          'Dreary',
+          'Sunny',
+          'Pleasant',
+          'Hot',
+          'Snowing'
+        ][Math.round((Math.random() * 4))]
+        window.document.querySelector('[data-el="weather"]').innerText = type
+        window.document.querySelector('ax-announcement').setAttribute('ax-say', `Today's weather is ${type}.`)
+      }
+      new Promise(resolve => {
+        window.addEventListener('DOMContentLoaded', () => {
+          resolve()
+        })
+      }).then(() => {
+        window.document.body.removeAttribute('aria-busy')
+        ;[...window.document.querySelectorAll('[ax-cloak]')].forEach(el => el.removeAttribute('ax-cloak'))
+      })
+    </script>
+  </head>
+  <body
+    role="document"
+    aria-busy="true">
+    <ax-main
+      ax-title="AX Elements"
+      ax-cloak>
+      <ax-article
+        ax-title="Landmark Regions">
+        <ax-section
+          ax-title="Section">
+          <p>Content</p>
+        </ax-section>
+        <ax-article
+          ax-title="Article">
+          <p>Content</p>
+        </ax-article>
+        <ax-region
+          ax-title="Region">
+          <p>Content</p>
+        </ax-region>
+        <ax-section
+          ax-title="Nested Section Outer">
+          <ax-section
+            ax-title="Nested Section">
+            <p>Nested Content</p>
+          </ax-section>
+        </ax-section>
       </ax-article>
-    </ax-article>
-  </ax-article>
-  <ax-article ax-title="Button">
-    <ax-button
-      onclick="(function handleClick () {
-        document.querySelector('[data-el=button-output]').innerText =
-          (parseInt(document.querySelector('[data-el=button-output]').innerText, 10) || 0) + 1
-      })()">
-      Increase Counter
-    </ax-button>
-    <output data-el="button-output">
-      0
-    </output>
-  </ax-article>
-  <ax-article ax-title="Link">
-    Sometimes you need a hyperlink that goes to
-    <ax-link ax-url="https://www.google.com">
-      Google
-    </ax-link>
-  </ax-article>
-  <ax-article ax-title="Details/Summary">
-    <ax-details>
-      <ax-summary>
-        UI Designer
-      </ax-summary>
-      <p>A digital artist who creates the look and feel for computer programs.</p>
-    </ax-details>
-    <ax-details>
-      <ax-summary>
-        Software Engineer
-      </ax-summary>
-      <p>Someone who creates computer programs.</p>
-    </ax-details>
-  </ax-article>
-  <ax-article ax-title="Textbox">
-    <ax-textbox ax-label="Example"></ax-textbox>
-  </ax-article>
-  <ax-article ax-title="Form">
-    <ax-form
-      action="example-success-response.json"
-      method="GET"
-      onload="(function handleLoad (event) {
-        this.querySelector('[data-el=form-output]').innerText = JSON.stringify(this.result)
-      }.bind(this))(event)"
-      onerror="(function handleError (event) {
-        this.querySelector('[data-el=form-error]').innerText = event.error
-      }.bind(this))(event)">
-      <ax-textbox
-        ax-label="First Name"
-        ax-name="firstName"
-        ax-placeholder="John"
-        ax-required>
-      </ax-textbox>
-      <ax-textbox
-        ax-label="Last Name"
-        ax-name="lastName"
-        ax-placeholder="Doe"
-        ax-required>
-      </ax-textbox>
-      <ax-button ax-submit>
-        Submit
-      </ax-button>
-      <output data-el="form-error"></output>
-      <div slot="loaded">
-        Complete! Response: <output data-el="form-output"></output>
-      </div>
-    </ax-form>
-  </ax-article>
-  <ax-article ax-title="Dialog">
-    <ax-button ax-open-dialog="cart">
-      Add to Cart
-    </ax-button>
-  </ax-article>
-  <ax-article ax-title="Alert">
-    <ax-form
-      action="example-success-response.json"
-      method="GET"
-      onload="(function handleLoad(event) {
-        event.preventDefault()
-        document.querySelector('ax-alert[ax-name=saved]').setAttribute('ax-open', '')
-      })(event)">
-      <ax-textbox
-        ax-label="Message"
-        ax-name="message"
-        ax-value="Wow..."
-        ax-multiline
-        ax-required>
-      </ax-textbox>
-      <ax-button ax-submit>
-        Save
-      </ax-button>
-    </ax-form>
-  </ax-article>
-  <ax-article ax-title="Announcement">
-    <ax-button onclick="checkWeather()">
-      Check the Weather
-    </ax-button>
-    <p>Weather: <span data-el="weather">?</span></p>
-  </ax-article>
-  <ax-article ax-title="Grid">
-    <ax-grid ax-title="Tabular Data">
-      <ax-row>
-        <ax-cell>
-          Item 1
-        </ax-cell>
-        <ax-cell>
-          4.3 / 5 Star Rating
-        </ax-cell>
-        <ax-cell>
-          <ax-button ax-open-dialog="cart">
-            Add Item 1 to Cart
+      <ax-article
+        ax-title="Button">
+        <ax-button
+          onclick="(function handleClick () {
+            document.querySelector('[data-el=button-output]').innerText =
+              (parseInt(document.querySelector('[data-el=button-output]').innerText, 10) || 0) + 1
+          })()">
+          Increase Counter
+        </ax-button>
+        <output data-el="button-output">
+          0
+        </output>
+      </ax-article>
+      <ax-article
+        ax-title="Link">
+        Sometimes you need a hyperlink that goes to
+        <ax-link
+          ax-url="https://www.google.com">
+          Google
+        </ax-link>
+      </ax-article>
+      <ax-article
+        ax-title="Details/Summary">
+        <ax-details>
+          <ax-summary>
+            UI Designer
+          </ax-summary>
+          <p>
+            A digital artist who creates the look and feel for computer programs.
+          </p>
+        </ax-details>
+        <ax-details>
+          <ax-summary>
+            Software Engineer
+          </ax-summary>
+          <p>
+            Someone who creates computer programs.
+          </p>
+        </ax-details>
+      </ax-article>
+      <ax-article
+        ax-title="Textbox">
+        <ax-textbox
+          ax-label="Example">
+        </ax-textbox>
+      </ax-article>
+      <ax-article
+        ax-title="Form">
+        <ax-form
+          ax-action="example-success-response.json"
+          ax-method="GET"
+          onload="(function handleLoad (event) {
+            this.querySelector('[data-el=form-output]').innerText = JSON.stringify(this.result)
+          }.bind(this))(event)"
+          onerror="(function handleError (event) {
+            this.querySelector('[data-el=form-error]').innerText = event.error
+          }.bind(this))(event)">
+          <ax-textbox
+            ax-label="First Name"
+            ax-name="firstName"
+            ax-placeholder="John"
+            ax-required>
+          </ax-textbox>
+          <ax-textbox
+            ax-label="Last Name"
+            ax-name="lastName"
+            ax-placeholder="Doe"
+            ax-required>
+          </ax-textbox>
+          <ax-button
+            ax-submit>
+            Submit
           </ax-button>
-        </ax-cell>
-      </ax-row>
-      <ax-row>
-        <ax-cell>
-          Item 2
-        </ax-cell>
-        <ax-cell>
-          4.7 / 5 Star Rating
-        </ax-cell>
-        <ax-cell>
-          <ax-button ax-open-dialog="cart">
-            Add Item 2 to Cart
+          <output data-el="form-error"></output>
+          <div slot="loaded">
+            Complete! Response: <output data-el="form-output"></output>
+          </div>
+        </ax-form>
+      </ax-article>
+      <ax-article
+        ax-title="Dialog">
+        <ax-button
+          ax-open-dialog="cart">
+          Add to Cart
+        </ax-button>
+      </ax-article>
+      <ax-article
+        ax-title="Alert">
+        <ax-form
+          ax-action="example-success-response.json"
+          ax-method="GET"
+          onload="(function handleLoad(event) {
+            event.preventDefault()
+            document.querySelector('ax-alert[ax-name=saved]').setAttribute('ax-open', '')
+          })(event)">
+          <ax-textbox
+            ax-label="Message"
+            ax-name="message"
+            ax-value="Wow..."
+            ax-multiline
+            ax-required>
+          </ax-textbox>
+          <ax-button
+            ax-submit>
+            Save
           </ax-button>
-        </ax-cell>
-      </ax-row>
-      <ax-row>
-        <ax-cell>
-          Item 3
-        </ax-cell>
-        <ax-cell>
-          3.8 / 5 Star Rating
-        </ax-cell>
-        <ax-cell>
-          <ax-button ax-open-dialog="cart">
-            Add Item 3 to Cart
-          </ax-button>
-        </ax-cell>
-      </ax-row>
-    </ax-grid>
-  </ax-article>
-  <ax-article ax-title="Tabs">
-    <ax-tabs>
-      <ax-tablist>
-        <ax-tab>
-          Tab1!
-        </ax-tab>
-        <ax-tab>
-          Tab2!
-        </ax-tab>
-        <ax-tab>
-          Tab3!
-        </ax-tab>
-      </ax-tablist>
-      <ax-tabpanel>
-        Content1!
-      </ax-tabpanel>
-      <ax-tabpanel>
-        Content2!
-      </ax-tabpanel>
-      <ax-tabpanel>
-        Content3!
-      </ax-tabpanel>
-    </ax-tabs>
-  </ax-article>
-</ax-main>
+        </ax-form>
+      </ax-article>
+      <ax-article
+        ax-title="Announcement">
+        <ax-button
+          onclick="checkWeather()">
+          Check the Weather
+        </ax-button>
+        <p>
+          Weather:
+          <span data-el="weather">
+            ?
+          </span>
+        </p>
+      </ax-article>
+      <ax-article
+        ax-title="Grid">
+        <ax-grid
+          ax-title="Tabular Data">
+          <ax-row>
+            <ax-cell>
+              Item 1
+            </ax-cell>
+            <ax-cell>
+              4.3 / 5 Star Rating
+            </ax-cell>
+            <ax-cell>
+              <ax-button
+                ax-open-dialog="cart">
+                Add Item 1 to Cart
+              </ax-button>
+            </ax-cell>
+          </ax-row>
+          <ax-row>
+            <ax-cell>
+              Item 2
+            </ax-cell>
+            <ax-cell>
+              4.7 / 5 Star Rating
+            </ax-cell>
+            <ax-cell>
+              <ax-button
+                ax-open-dialog="cart">
+                Add Item 2 to Cart
+              </ax-button>
+            </ax-cell>
+          </ax-row>
+          <ax-row>
+            <ax-cell>
+              Item 3
+            </ax-cell>
+            <ax-cell>
+              3.8 / 5 Star Rating
+            </ax-cell>
+            <ax-cell>
+              <ax-button
+                ax-open-dialog="cart">
+                Add Item 3 to Cart
+              </ax-button>
+            </ax-cell>
+          </ax-row>
+        </ax-grid>
+      </ax-article>
+      <ax-article
+        ax-title="Tabs">
+        <ax-tabs>
+          <ax-tablist>
+            <ax-tab>
+              Tab1!
+            </ax-tab>
+            <ax-tab>
+              Tab2!
+            </ax-tab>
+            <ax-tab>
+              Tab3!
+            </ax-tab>
+          </ax-tablist>
+          <ax-tabpanel>
+            Content1!
+          </ax-tabpanel>
+          <ax-tabpanel>
+            Content2!
+          </ax-tabpanel>
+          <ax-tabpanel>
+            Content3!
+          </ax-tabpanel>
+        </ax-tabs>
+      </ax-article>
+    </ax-main>
 
-<ax-dialog
-  ax-name="cart"
-  ax-title="Shopping Cart"
-  ax-cloak>
-  <p>
-    I'm the content!
-  </p>
-  <p>
-    I too am content inside of a modal dialog!!
-    <a href="#">??</a>
-  </p>
-</ax-dialog>
+    <ax-dialog
+      ax-name="cart"
+      ax-title="Shopping Cart"
+      ax-cloak>
+      <p>
+        I'm the content!
+      </p>
+      <p>
+        I too am content inside of a modal dialog!!
+        <a href="#">??</a>
+      </p>
+    </ax-dialog>
 
-<!--
-<ax-alertdialog
-  ax-name="error"
-  ax-title="Error!"
-  ax-cloak>
-  <p>
-    I'm modal alert dialog!
-  </p>
-</ax-alertdialog>
--->
+    <!--
+    <ax-alertdialog
+      ax-name="error"
+      ax-title="Error!"
+      ax-cloak>
+      <p>
+        I'm modal alert dialog!
+      </p>
+    </ax-alertdialog>
+    -->
 
-<ax-alert
-  ax-name="saved"
-  ax-cloak>
-  Saved!
-</ax-alert>
+    <ax-alert
+      ax-name="saved"
+      ax-cloak>
+      Saved!
+    </ax-alert>
 
-<ax-announcement ax-cloak></ax-announcement>
+    <ax-announcement ax-cloak></ax-announcement>
+  </body>
+</html>
