@@ -5,13 +5,7 @@ template.innerHTML = `
   <style>
     :host(:not([hidden])) {
       display: grid;
-    }
-    :host([ax-inline]) {
-      grid-auto-flow: column;
-      justify-items: flex-start;
-      grid-auto-columns: minmax(0, max-content);
-      align-items: center;
-      grid-column-gap: 1ch;
+      grid-gap: 1em;
     }
   </style>
   <slot></slot>

@@ -28,20 +28,25 @@ template.innerHTML = `
   </style>
   <ax-view
     data-el="region"
+    part="region"
     role="main"
     aria-labelledby="headline">
     <span
       role="heading"
       aria-level="1"
       id="headline"
-      data-el="headline">
+      data-el="headline"
+      part="headline">
       <slot
         data-el="headline-slot"
         name="headline">
         Untitled
       </slot>
     </span>
-    <slot></slot>
+    <ax-view
+      data-el="content">
+      <slot></slot>
+    </ax-view>
   </ax-view>
 `
 window.document.body.append(template)
@@ -63,13 +68,11 @@ export default class AXLandmark extends AXElement {
     if (!this.getAttribute('ax-section')) {
       switch (this.getAttribute('ax-internal-role')) {
         case 'main': return 'section'
-        case 'section': return 'article'
         default: return 'region'
       }
     }
     switch (this.getAttribute('ax-section')) {
       case 'main': return 'section'
-      case 'section': return 'article'
       default: return 'region'
     }
   }
@@ -84,6 +87,11 @@ export default class AXLandmark extends AXElement {
         el.setAttribute('ax-internal-role', this.nextRole)
         el.setAttribute('ax-internal-level', this.nextLevel)
       })
+      if (this.getAttribute('ax-section') === 'navigation') {
+        ;[...this.querySelectorAll('*:not(ax-link):not(ax-view):not(ax-text)')].forEach(el => {
+          el.remove()
+        })
+      }
     })
   }
 

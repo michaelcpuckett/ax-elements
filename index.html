@@ -29,6 +29,13 @@
       body[aria-busy="true"] {
         opacity: 0;
       }
+      ax-landmark[ax-internal-level="2"]::part(region) {
+        padding: 0;
+        border: 0;
+      }
+      ax-landmark[ax-internal-level="2"]::part(headline) {
+        border-bottom: 1px solid;
+      }
     </style>
     <script type="module">
       /*
@@ -84,122 +91,149 @@
       ax-name="AX Elements"
       ax-cloak>
       <ax-landmark
-        ax-name="Banner TODO"
-        ax-section="banner">
-        <p>Banner</p>
-      </ax-landmark>
-      <ax-landmark
-        ax-name="Navigation TODO"
-        ax-section="navigation">
-        <p>Navigation</p>
-      </ax-landmark>
-      <ax-landmark
-        ax-name="Contentinfo TODO"
-        ax-section="contentinfo">
-        <p>Contentinfo</p>
-      </ax-landmark>
-      <ax-landmark
-        ax-name="Landmark Regions">
+        ax-name="Landmarks">
         <ax-paragraph>
-          Sectioning roles and heading levels are implied, and can be overridden. Headings are required.
+          Navigational (or sectioning) landmarks comprise the document outline.
         </ax-paragraph>
-        <ax-landmark
-          ax-name="Calculated (Main > Section > Article > Region)">
-          <ax-landmark
-            ax-name="Calculated Inner">
-            <ax-paragraph>
-              Content
-            </ax-paragraph>
-          </ax-landmark>
-        </ax-landmark>
+        <ax-paragraph>
+          The document outline allows users of assistive technologies to skip to or skip over sections of the document.
+        </ax-paragraph>
+        <ax-paragraph>
+          Landmarks also assist robots in understanding which parts of the document are important, and how information is grouped.
+        </ax-paragraph>
         <ax-landmark
           ax-section="section"
           ax-name="Section">
           <ax-paragraph>
-            Content
-          </ax-paragraph>
-        </ax-landmark>
-        <ax-landmark
-          ax-section="article"
-          ax-name="Article">
-          <ax-paragraph>
-            Content
+            The section role represents a discrete structural unit of the document that contributes to the document outline, whose content is all related in some way.
           </ax-paragraph>
           <ax-landmark
-            ax-section="complementary"
-            ax-name="Complementary">
+            ax-section="section"
+            ax-name="Nested Section">
             <ax-paragraph>
-              Supplementary content
+              Section roles can be nested.
             </ax-paragraph>
           </ax-landmark>
+        </ax-landmark>
+        <ax-landmark
+          ax-section="complementary"
+          ax-name="Complementary">
+          <ax-paragraph>
+            The complementary role represents a discrete unit of the page that contributes to the document outline, whose content is only tangentially related to its ancestor sectioning landmark.
+          </ax-paragraph>
         </ax-landmark>
         <ax-landmark
           ax-section="region"
           ax-name="Region">
           <ax-paragraph>
-            Content
+            The region role represents some part of the document that does not comprise the document's structure but is still significant enough to contribute to the document outline.
           </ax-paragraph>
         </ax-landmark>
         <ax-landmark
-          ax-section="section"
-          ax-name="Outer Section">
-          <ax-landmark
-            ax-name="Nested Article">
-            <ax-paragraph>
-              Nested Content
-            </ax-paragraph>
-          </ax-landmark>
+          ax-name="Calculated (Main > Section > Region)">
+          <ax-paragraph>
+            Here, sectioning roles and heading levels are implied via calculation, and can be overridden.
+          </ax-paragraph>
+          <ax-paragraph>
+            The outermost landmark automatically gets the main role (of which there can only be one).
+          </ax-paragraph>
+          <ax-paragraph>
+            Descendant landmarks of the main role automatically get the section role.
+          </ax-paragraph>
+          <ax-paragraph>
+            Descendant landmarks of section roles automatically get the region role.
+          </ax-paragraph>
         </ax-landmark>
-      </ax-landmark>
-      <ax-landmark
-        ax-name="Button">
-        <ax-text>
-          <ax-button
-            onclick="(function handleClick () {
-              document.querySelector('[data-el=button-output]').innerText =
-                (parseInt(document.querySelector('[data-el=button-output]').innerText, 10) || 0) + 1
-            })()">
-            Increase Counter
-          </ax-button>
-          <output data-el="button-output">
-            0
-          </output>
-        </ax-text>
-      </ax-landmark>
-      <ax-landmark
-        ax-name="Link">
-        <ax-text>
-          Sometimes you need a hyperlink that goes to
-          <ax-link
-            ax-url="https://www.google.com">
-            Google
+        <ax-landmark
+          ax-name="Main"
+          ax-section="main">
+          <ax-paragraph>
+            The main role represents the unique structural unit of the document that contributes to the document outline, but whose content consitutes the current document's main content.
+          </ax-paragraph>
+        </ax-landmark>
+        <ax-landmark
+          ax-name="Banner"
+          ax-section="banner">
+          <ax-paragraph>
+            The banner role represents the unique header unit of the document that contributes to the document outline, but whose content is repeated on multiple documents and as such does not consitute the current document's main content.
+          </ax-paragraph>
+          <ax-paragraph>
+            It should appear before the main sectioning element.
+          </ax-paragraph>
+        </ax-landmark>
+        <ax-landmark
+          ax-name="Contentinfo"
+          ax-section="contentinfo">
+          <ax-paragraph>
+            The contentinfo role represents the unique footer structural unit of the document that contributes to the document outline, but whose content is repeated on multiple documents and as such does not consitute the current document's main content.
+          </ax-paragraph>
+          <ax-paragraph>
+            It should appear after the main sectioning element.
+          </ax-paragraph>
+        </ax-landmark>
+        <ax-landmark
+          ax-name="Navigation"
+          ax-section="navigation">
+          <ax-link ax-url="#">
+            The navigation role represents a structural unit of the document that contributes to the document outline, whose content is links to other documents.
           </ax-link>
-        </ax-text>
-      </ax-landmark>
-      <ax-landmark
-        ax-name="Details/Summary">
-        <ax-details>
-          <ax-summary>
-            UI Designer
-          </ax-summary>
+          <ax-link ax-url="#">
+            This lankmark only accepts links.
+          </ax-link>
           <ax-paragraph>
-            A digital artist who creates the look and feel for computer programs.
+            Non-link elements are removed.
           </ax-paragraph>
-        </ax-details>
-        <ax-details>
-          <ax-summary>
-            Software Engineer
-          </ax-summary>
-          <ax-paragraph>
-            Someone who creates computer programs.
-          </ax-paragraph>
-        </ax-details>
-      </ax-landmark>
-      <ax-landmark
-        ax-name="Textbox">
-        <ax-textbox
-          ax-label="Example">
-        </ax-textbox>
+        </ax-landmark>
+        <ax-landmark
+          ax-name="Button">
+          <ax-text>
+            <ax-button
+              onclick="(function handleClick () {
+                document.querySelector('[data-el=button-output]').innerText =
+                  (parseInt(document.querySelector('[data-el=button-output]').innerText, 10) || 0) + 1
+              })()">
+              Increase Counter
+            </ax-button>
+            <output data-el="button-output">
+              0
+            </output>
+          </ax-text>
+        </ax-landmark>
+        <ax-landmark
+          ax-name="Link">
+          <ax-text>
+            Sometimes you need a hyperlink that goes to
+            <ax-link
+              ax-url="https://www.google.com">
+              Google
+            </ax-link>
+          </ax-text>
+        </ax-landmark>
+        <ax-landmark
+          ax-name="Details/Summary">
+          <ax-details>
+            <ax-summary>
+              UI Designer
+            </ax-summary>
+            <ax-paragraph>
+              A digital artist who creates the look and feel for computer programs.
+            </ax-paragraph>
+          </ax-details>
+          <ax-details>
+            <ax-summary>
+              Software Engineer
+            </ax-summary>
+            <ax-paragraph>
+              Someone who creates computer programs.
+            </ax-paragraph>
+          </ax-details>
+        </ax-landmark>
+        <ax-landmark
+          ax-name="Textbox">
+          <ax-textbox
+            ax-label="Example">
+          </ax-textbox>
+        </ax-landmark>
       </ax-landmark>
       <ax-landmark
         ax-name="Form">
