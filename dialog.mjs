@@ -60,7 +60,7 @@ template.innerHTML = `
       border-style: solid;
       outline: 0;
     }
-    [data-el="title"] {
+    [data-el="headline"] {
       grid-column: 1 / 2;
       margin: 0;
       font-size: x-large;
@@ -77,33 +77,34 @@ template.innerHTML = `
     <ax-view
       data-el="overlay">
     </ax-view>
-    <div
+    <ax-view
       role="dialog"
       tabindex="-1"
       aria-modal="true"
-      aria-labelledby="title"
+      aria-labelledby="headline"
       aria-describedby="body"
       data-el="dialog">
       <span
         role="heading"
         aria-level="1"
-        slot="title"
-        data-el="title"
-        id="title">
+        data-el="headline"
+        id="headline">
+        <slot name="headline"></slot>
       </span>
       <ax-button
-        slot="close"
         ax-icon="close"
-        ax-label="Close"
         data-el="close">
+        <slot name="close">
+          Close
+        </slot>
       </ax-button>
       <ax-view
         data-el="body"
         id="body">
         <slot></slot>
       </ax-view>
-    </div>
-  </div>
+    </ax-view>
+  </ax-view>
 `
 window.document.body.append(template)
 
@@ -138,7 +139,7 @@ window.customElements.define('ax-dialog', class extends AXElement {
   static get observedAttributes() {
     return [
       'ax-open',
-      'ax-title'
+      'ax-name'
     ]
   }
   attributeChangedCallback(attributeName, prev, value) {
@@ -148,23 +149,17 @@ window.customElements.define('ax-dialog', class extends AXElement {
           this._priorFocus = window.document.activeElement
           setTimeout(() => {
             this.shadowRoot.querySelector('[data-el="close"]').focus()
-            const mainEl = window.document.querySelector('ax-main, main')
-            if (mainEl) {
-              mainEl.setAttribute('inert', '')
-            }
+            ;[...window.document.querySelectorAll('ax-landmark')].forEach(el => el.setAttribute('inert', ''))
           })
         } else {
-          const mainEl = window.document.querySelector('ax-main, main')
-          if (mainEl) {
-            mainEl.removeAttribute('inert')
-          }
+          ;[...window.document.querySelectorAll('ax-landmark')].forEach(el => el.removeAttribute('inert'))
           this._priorFocus.focus()
           this._priorFocus = null
         }
       }
       break
-      case 'ax-title': {
-        this.shadowRoot.querySelector('[data-el="title"]').innerHTML = value
+      case 'ax-name': {
+        this.shadowRoot.querySelector('slot[name="headline"]').innerText = value
       }
       break
       default: return

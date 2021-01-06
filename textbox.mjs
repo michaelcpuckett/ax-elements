@@ -226,7 +226,7 @@ window.customElements.define('ax-textbox', class AXTextbox extends AXElement {
 
   static get observedAttributes() {
     return [,
-      'ax-name',
+      'ax-ref',
       'ax-label',
       'ax-value',
       'ax-required',

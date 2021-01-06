@@ -116,7 +116,7 @@ class AXButton extends AXElement {
         if (value) {
           this.ariaHasPopup = 'dialog'
           this._openDialogHandler = () => {
-            const dialogEl = window.document.querySelector(`ax-dialog[ax-name="${value}"]`)
+            const dialogEl = window.document.querySelector(`ax-dialog[ax-ref="${value}"]`)
             if (dialogEl) {
               dialogEl.setAttribute('ax-open', '')
             }

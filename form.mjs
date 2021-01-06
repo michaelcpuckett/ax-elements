@@ -44,7 +44,7 @@ window.customElements.define('ax-form', class extends AXElement {
         this.formData = Object.fromEntries(
           allFieldEls
             .map(el => [
-              el.getAttribute('ax-name'),
+              el.getAttribute('ax-ref'),
               el.getAttribute('ax-value') || ''
             ])
         )
@@ -57,8 +57,8 @@ window.customElements.define('ax-form', class extends AXElement {
           if (actionURL) {
             const method = this.getAttribute('ax-method') || 'POST'
             const url = new URL(actionURL, window.document.location)
-            Object.entries(this.formData).forEach(([ name, value ]) => {
-              url.searchParams.set(name, value)
+            Object.entries(this.formData).forEach(([ key, value ]) => {
+              url.searchParams.set(key, value)
             })
             this.tabIndex = '-1' // TODO: Show invisible overlay to prevent mouse click?
             this.focus()

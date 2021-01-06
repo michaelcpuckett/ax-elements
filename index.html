@@ -31,10 +31,13 @@
       }
     </style>
     <script type="module">
+      /*
       import './region.mjs'
       import './main.mjs'
       import './section.mjs'
       import './article.mjs'
+      */
+      import './landmark.mjs'
       import './view.mjs'
       import './text.mjs'
       import './paragraph.mjs'
@@ -77,41 +80,45 @@
   <body
     role="document"
     aria-busy="true">
-    <ax-main
-      ax-title="AX Elements"
+    <ax-landmark
+      ax-name="AX Elements"
       ax-cloak>
-      <ax-article
-        ax-title="Landmark Regions">
-        <ax-article
-          ax-title="Section">
+      <ax-landmark
+        ax-name="Landmark Regions">
+        <ax-landmark
+          ax-section="section"
+          ax-name="Section">
           <ax-paragraph>
             Content
           </ax-paragraph>
-        </ax-article>
-        <ax-article
-          ax-title="Article">
+        </ax-landmark>
+        <ax-landmark
+          ax-section="article"
+          ax-name="Article">
           <ax-paragraph>
             Content
           </ax-paragraph>
-        </ax-article>
-        <ax-region
-          ax-title="Region">
+        </ax-landmark>
+        <ax-landmark
+          ax-section="region"
+          ax-name="Region">
           <ax-paragraph>
             Content
           </ax-paragraph>
-        </ax-region>
-        <ax-section
-          ax-title="Nested Section Outer">
-          <ax-section
-            ax-title="Nested Section">
+        </ax-landmark>
+        <ax-landmark
+          ax-section="section"
+          ax-name="Outer Section">
+          <ax-landmark
+            ax-name="Nested Article">
             <ax-paragraph>
               Nested Content
             </ax-paragraph>
-          </ax-article>
-        </ax-article>
-      </ax-article>
-      <ax-article
-        ax-title="Button">
+          </ax-landmark>
+        </ax-landmark>
+      </ax-landmark>
+      <ax-landmark
+        ax-name="Button">
         <ax-text>
           <ax-button
             onclick="(function handleClick () {
@@ -124,9 +131,9 @@
             0
           </output>
         </ax-text>
-      </ax-article>
-      <ax-article
-        ax-title="Link">
+      </ax-landmark>
+      <ax-landmark
+        ax-name="Link">
         <ax-text>
           Sometimes you need a hyperlink that goes to
           <ax-link
@@ -134,9 +141,9 @@
             Google
           </ax-link>
         </ax-text>
-      </ax-article>
-      <ax-article
-        ax-title="Details/Summary">
+      </ax-landmark>
+      <ax-landmark
+        ax-name="Details/Summary">
         <ax-details>
           <ax-summary>
             UI Designer
@@ -153,15 +160,15 @@
             Someone who creates computer programs.
           </ax-paragraph>
         </ax-details>
-      </ax-article>
-      <ax-article
-        ax-title="Textbox">
+      </ax-landmark>
+      <ax-landmark
+        ax-name="Textbox">
         <ax-textbox
           ax-label="Example">
         </ax-textbox>
-      </ax-article>
-      <ax-article
-        ax-title="Form">
+      </ax-landmark>
+      <ax-landmark
+        ax-name="Form">
         <ax-form
           ax-action="example-success-response.json"
           ax-method="GET"
@@ -193,22 +200,22 @@
             <output data-el="form-output"></output>
           </ax-text>
         </ax-form>
-      </ax-article>
-      <ax-article
-        ax-title="Dialog">
+      </ax-landmark>
+      <ax-landmark
+        ax-name="Dialog">
         <ax-button
           ax-open-dialog="cart">
           Add to Cart
         </ax-button>
-      </ax-article>
-      <ax-article
-        ax-title="Alert">
+      </ax-landmark>
+      <ax-landmark
+        ax-name="Alert">
         <ax-form
           ax-action="example-success-response.json"
           ax-method="GET"
           onload="(function handleLoad(event) {
             event.preventDefault()
-            document.querySelector('ax-alert[ax-name=saved]').setAttribute('ax-open', '')
+            document.querySelector('ax-alert[ax-ref=saved]').setAttribute('ax-open', '')
           })(event)">
           <ax-textbox
             ax-label="Message"
@@ -222,9 +229,9 @@
             Save
           </ax-button>
         </ax-form>
-      </ax-article>
-      <ax-article
-        ax-title="Announcement">
+      </ax-landmark>
+      <ax-landmark
+        ax-name="Announcement">
         <ax-button
           onclick="checkWeather()">
           Check the Weather
@@ -235,11 +242,11 @@
             ?
           </ax-text>
         </ax-paragraph>
-      </ax-article>
-      <ax-article
-        ax-title="Grid">
+      </ax-landmark>
+      <ax-landmark
+        ax-name="Grid">
         <ax-grid
-          ax-title="Tabular Data">
+          ax-name="Tabular Data">
           <ax-row>
             <ax-cell>
               Item 1
@@ -283,9 +290,9 @@
             </ax-cell>
           </ax-row>
         </ax-grid>
-      </ax-article>
-      <ax-article
-        ax-title="Tabs">
+      </ax-landmark>
+      <ax-landmark
+        ax-name="Tabs">
         <ax-tabs>
           <ax-tablist>
             <ax-tab>
@@ -308,12 +315,12 @@
             Content3!
           </ax-tabpanel>
         </ax-tabs>
-      </ax-article>
+      </ax-landmark>
     </ax-main>
 
     <ax-dialog
-      ax-name="cart"
-      ax-title="Shopping Cart"
+      ax-ref="cart"
+      ax-name="Shopping Cart"
       ax-cloak>
       <ax-paragraph>
         I'm the content!
@@ -328,8 +335,8 @@
 
     <!--
     <ax-alertdialog
-      ax-name="error"
-      ax-title="Error!"
+      ax-ref="error"
+      ax-name="Error!"
       ax-cloak>
       <p>
         I'm modal alert dialog!
@@ -338,7 +345,7 @@
     -->
 
     <ax-alert
-      ax-name="saved"
+      ax-ref="saved"
       ax-cloak>
       Saved!
     </ax-alert>
