@@ -51,14 +51,17 @@ export default class AXLandmark extends AXElement {
     if (!this.hasAttribute('ax-internal-level')) {
       this.setAttribute('ax-internal-level', '1')
     }
+    if (!this.hasAttribute('ax-internal-role')) {
+      this.setAttribute('ax-internal-role', 'main')
+    }
     this._regionEl = this.shadowRoot.querySelector('[data-el="region"]')
     this._headlineEl = this.shadowRoot.querySelector('[data-el="headline"]')
     this._headlineSlotEl = this.shadowRoot.querySelector('[data-el="headline-slot"]')
   }
 
-  get nextSection() {
+  get nextRole() {
     if (!this.getAttribute('ax-section')) {
-      return 'section'
+      return 'article'
     }
     switch (this.getAttribute('ax-section')) {
       case 'section': return 'article'
@@ -66,13 +69,15 @@ export default class AXLandmark extends AXElement {
     }
   }
 
+  get nextLevel() {
+    return `${parseInt(this.getAttribute('ax-heading-level') || 1, 10) + 1}`
+  }
+
   connectedCallback() {
     setTimeout(() => {
-      ;[...this.querySelectorAll('[ax-internal-level]')].forEach(el => {
-        if (!el.hasAttribute('ax-section')) {
-          el.setAttribute('ax-section', this.nextSection)
-        }
-        el.setAttribute('ax-internal-level', `${parseInt(this.getAttribute('ax-heading-level') || 0, 10) + 1}`)
+      ;[...this.querySelectorAll('ax-landmark')].forEach(el => {
+        el.setAttribute('ax-internal-role', this.nextRole)
+        el.setAttribute('ax-internal-level', this.nextLevel)
       })
     })
   }
@@ -82,6 +87,7 @@ export default class AXLandmark extends AXElement {
       'ax-name',
       'ax-section',
       'ax-internal-level',
+      'ax-internal-role',
       'inert'
     ]
   }
@@ -96,22 +102,34 @@ export default class AXLandmark extends AXElement {
         if (value) {
           this._regionEl.setAttribute('role', value)
         } else {
-          this._regionEl.setAttribute('role', 'region') // defaultRole?
+          this._regionEl.setAttribute('role', this.getAttribute('ax-internal-role')) // defaultRole?
         }
         setTimeout(() => {
-          ;[...this.querySelectorAll('[ax-internal-level]')].forEach(el => {
-            if (!el.hasAttribute('ax-section')) {
-              console.log(this.getAttribute('ax-section'), this.nextSection)
-              el.setAttribute('ax-section', this.nextSection)
+          ;[...this.querySelectorAll('ax-landmark')].forEach(el => {
+            if (!el.hasAttribute('ax-internal-role')) {
+              el.setAttribute('ax-internal-role', this.nextRole)
             }
           })
         })
       }
       break
+      case 'ax-internal-role': {
+        if (!this.hasAttribute('ax-section')) {
+          if (value) {
+            this._regionEl.setAttribute('role', value)
+          } else {
+            this._regionEl.setAttribute('role', 'region')
+          }
+          setTimeout(() => {
+            ;[...this.querySelectorAll('ax-landmark')].forEach(el => el.setAttribute('ax-internal-role', this.nextRole))
+          })
+        }
+      }
+      break
       case 'ax-internal-level': {
         this._headlineEl.setAttribute('aria-level', value)
         setTimeout(() => {
-          ;[...this.querySelectorAll('[ax-internal-level]')].forEach(el => el.setAttribute('ax-internal-level', `${parseInt(value, 10) + 1}`))
+          ;[...this.querySelectorAll('ax-landmark')].forEach(el => el.setAttribute('ax-internal-level', `${parseInt(value, 10) + 1}`))
         })
       }
       break
