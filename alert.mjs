@@ -25,12 +25,11 @@ template.innerHTML = `
       font-size: larger;
     }
   </style>
-  <div
+  <ax-view
     data-el="content"
-    hidden
-    role="presentation">
+    hidden>
     <slot></slot>
-  </div>
+  </ax-view>
 `
 window.document.body.append(template)
 

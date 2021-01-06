@@ -7,7 +7,7 @@ template.innerHTML = `
       display: contents;
     }
     [data-el="summary"] {
-      display: block;
+      display: grid;
     }
   </style>
   <ax-button
@@ -18,7 +18,7 @@ template.innerHTML = `
     aria-expanded="false">
     <slot name="ax-summary"></slot>
   </ax-button>
-  <div
+  <ax-view
     hidden
     tabindex="-1"
     role="region"
@@ -26,7 +26,7 @@ template.innerHTML = `
     aria-labelledby="summary"
     data-el="region">
     <slot></slot>
-  </div>
+  </ax-view>
 `
 window.document.body.append(template)
 window.customElements.define('ax-details', class extends AXElement {

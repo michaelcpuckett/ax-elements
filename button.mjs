@@ -8,13 +8,14 @@ template.innerHTML = `
       -webkit-touch-callout: none;
       -webkit-user-select: none;
       user-select: none;
+      display: inline-grid;
     }
     :host(:not([ax-no-appearance])) {
       --color: var(--ax-color, var(--ax-interactive-color));
       --background-color: var(--ax-background-color, var(--ax-interactive-background-color));
-      display: inline-grid;
       grid-auto-flow: column;
       align-items: center;
+      width: max-content;
       padding: var(--padding, 4px 8px);
       color: var(--color, inherit);
       background-color: var(--background-color, transparent);
@@ -57,7 +58,7 @@ class AXButton extends AXElement {
     this.addEventListener('keydown', event => {
       if (['Enter', ' '].includes(event.key)) {
         event.preventDefault()
-        this.dispatchEvent(new CustomEvent('click'))
+        this.dispatchEvent(new Event('click'))
       }
     })
   }

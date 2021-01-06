@@ -24,6 +24,12 @@ window.customElements.define('ax-link', class extends AXElement {
         window.location.assign(this.getAttribute('ax-url'))
       }
     })
+    this.addEventListener('keydown', event => {
+      if (event.key === 'Enter') {
+        event.preventDefault()
+        this.dispatchEvent(new Event('click'))
+      }
+    })
   }
   static get observedAttributes() {
     return [

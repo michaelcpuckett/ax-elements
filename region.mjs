@@ -6,10 +6,15 @@ template.innerHTML = `
     :host(*) {
       display: contents;
     }
+    [data-el="region"] {
+      border: 1px solid;
+      padding: 1em;
+      display: grid;
+      grid-gap: 1em;
+    }
     [data-el="title"] {
-      margin: 1em 0;
       font-weight: bold;
-      display: block;
+      display: grid;
     }
     [data-el="title"][aria-level="1"] {
       font-size: xx-large;
@@ -21,7 +26,7 @@ template.innerHTML = `
       font-size: large;
     }
   </style>
-  <div
+  <ax-view
     data-el="region"
     role="region"
     aria-labelledby="title">
@@ -37,7 +42,7 @@ template.innerHTML = `
       </slot>
     </span>
     <slot></slot>
-  </div>
+  </ax-view>
 `
 window.document.body.append(template)
 export default class AXRegion extends AXElement {

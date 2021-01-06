@@ -4,20 +4,23 @@ const template = window.document.createElement('template')
 template.innerHTML = `
   <style>
     :host(*) {
-      display: block;
+      display: grid;
+    }
+    [data-el="unloaded"]:not([hidden]),
+    [data-el="loaded"]:not([hidden]) {
+      grid-gap: 1em;
+      display: grid;
     }
   </style>
-  <div
-    data-el="unloaded"
-    role="presentation">
+  <ax-view
+    data-el="unloaded">
     <slot></slot>
-  </div>
-  <div
+  </ax-view>
+  <ax-view
     data-el="loaded"
-    role="presentation"
     hidden>
     <slot name="loaded"></slot>
-  </div>
+  </ax-view>
 `
 window.document.body.append(template)
 window.customElements.define('ax-form', class extends AXElement {

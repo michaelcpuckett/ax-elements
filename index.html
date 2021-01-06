@@ -22,7 +22,9 @@
         overflow: hidden;
       }
       body {
+        margin: 0;
         transition: .125s opacity ease-in;
+        font-family: sans-serif;
       }
       body[aria-busy="true"] {
         opacity: 0;
@@ -33,6 +35,9 @@
       import './main.mjs'
       import './section.mjs'
       import './article.mjs'
+      import './view.mjs'
+      import './text.mjs'
+      import './paragraph.mjs'
       import './button.mjs'
       import './link.mjs'
       import './details.mjs'
@@ -77,46 +82,58 @@
       ax-cloak>
       <ax-article
         ax-title="Landmark Regions">
-        <ax-section
+        <ax-article
           ax-title="Section">
-          <p>Content</p>
-        </ax-section>
+          <ax-paragraph>
+            Content
+          </ax-paragraph>
+        </ax-article>
         <ax-article
           ax-title="Article">
-          <p>Content</p>
+          <ax-paragraph>
+            Content
+          </ax-paragraph>
         </ax-article>
         <ax-region
           ax-title="Region">
-          <p>Content</p>
+          <ax-paragraph>
+            Content
+          </ax-paragraph>
         </ax-region>
         <ax-section
           ax-title="Nested Section Outer">
           <ax-section
             ax-title="Nested Section">
-            <p>Nested Content</p>
-          </ax-section>
-        </ax-section>
+            <ax-paragraph>
+              Nested Content
+            </ax-paragraph>
+          </ax-article>
+        </ax-article>
       </ax-article>
       <ax-article
         ax-title="Button">
-        <ax-button
-          onclick="(function handleClick () {
-            document.querySelector('[data-el=button-output]').innerText =
-              (parseInt(document.querySelector('[data-el=button-output]').innerText, 10) || 0) + 1
-          })()">
-          Increase Counter
-        </ax-button>
-        <output data-el="button-output">
-          0
-        </output>
+        <ax-text>
+          <ax-button
+            onclick="(function handleClick () {
+              document.querySelector('[data-el=button-output]').innerText =
+                (parseInt(document.querySelector('[data-el=button-output]').innerText, 10) || 0) + 1
+            })()">
+            Increase Counter
+          </ax-button>
+          <output data-el="button-output">
+            0
+          </output>
+        </ax-text>
       </ax-article>
       <ax-article
         ax-title="Link">
-        Sometimes you need a hyperlink that goes to
-        <ax-link
-          ax-url="https://www.google.com">
-          Google
-        </ax-link>
+        <ax-text>
+          Sometimes you need a hyperlink that goes to
+          <ax-link
+            ax-url="https://www.google.com">
+            Google
+          </ax-link>
+        </ax-text>
       </ax-article>
       <ax-article
         ax-title="Details/Summary">
@@ -124,17 +141,17 @@
           <ax-summary>
             UI Designer
           </ax-summary>
-          <p>
+          <ax-paragraph>
             A digital artist who creates the look and feel for computer programs.
-          </p>
+          </ax-paragraph>
         </ax-details>
         <ax-details>
           <ax-summary>
             Software Engineer
           </ax-summary>
-          <p>
+          <ax-paragraph>
             Someone who creates computer programs.
-          </p>
+          </ax-paragraph>
         </ax-details>
       </ax-article>
       <ax-article
@@ -171,9 +188,10 @@
             Submit
           </ax-button>
           <output data-el="form-error"></output>
-          <div slot="loaded">
-            Complete! Response: <output data-el="form-output"></output>
-          </div>
+          <ax-text slot="loaded">
+            Complete! Response:
+            <output data-el="form-output"></output>
+          </ax-text>
         </ax-form>
       </ax-article>
       <ax-article
@@ -211,12 +229,12 @@
           onclick="checkWeather()">
           Check the Weather
         </ax-button>
-        <p>
+        <ax-paragraph>
           Weather:
-          <span data-el="weather">
+          <ax-text data-el="weather">
             ?
-          </span>
-        </p>
+          </ax-text>
+        </ax-paragraph>
       </ax-article>
       <ax-article
         ax-title="Grid">
@@ -297,13 +315,15 @@
       ax-name="cart"
       ax-title="Shopping Cart"
       ax-cloak>
-      <p>
+      <ax-paragraph>
         I'm the content!
-      </p>
-      <p>
-        I too am content inside of a modal dialog!!
-        <a href="#">??</a>
-      </p>
+      </ax-paragraph>
+      <ax-paragraph>
+        <ax-link
+          ax-url="#">
+          I too am content inside of a modal dialog!
+        </a>
+      </ax-paragraph>
     </ax-dialog>
 
     <!--

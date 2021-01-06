@@ -72,38 +72,36 @@ template.innerHTML = `
       grid-column: 1 / 3;
     }
   </style>
-  <div
-    data-el="scrollable"
-    role="presentation">
-    <div
-      data-el="overlay"
-      role="presentation">
-    </div>
+  <ax-view
+    data-el="scrollable">
+    <ax-view
+      data-el="overlay">
+    </ax-view>
     <div
       role="dialog"
       tabindex="-1"
       aria-modal="true"
       aria-labelledby="title"
       aria-describedby="body"
-      data-el="dialog"
-      role="presentation">
-      <h1
+      data-el="dialog">
+      <span
+        role="heading"
+        aria-level="1"
         slot="title"
         data-el="title"
         id="title">
-      </h1>
+      </span>
       <ax-button
         slot="close"
         ax-icon="close"
         ax-label="Close"
         data-el="close">
       </ax-button>
-      <div
+      <ax-view
         data-el="body"
-        role="presentation"
         id="body">
         <slot></slot>
-      </div>
+      </ax-view>
     </div>
   </div>
 `

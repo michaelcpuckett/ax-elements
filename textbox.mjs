@@ -60,7 +60,7 @@ template.innerHTML = `
       display: none;
     }
     :host([ax-multiline]) [data-el="input"] br {
-      display: block;
+      display: grid;
     }
     [data-el="placeholder"]:not([hidden]) {
       display: inline-grid;
@@ -77,26 +77,25 @@ template.innerHTML = `
       white-space: pre;
     }
     [data-el="validation"]:not([hidden]) {
-      display: block;
+      display: grid;
     }
     [data-el="validation"] {
       color: red;
     }
   </style>
-  <span
+  <ax-text
     id="label"
     tabindex="-1"
     aria-hidden="true"
     data-el="label">
-  </span>
-  <span
-    role="presentation"
+  </ax-text>
+  <ax-text
     data-el="wrapper">
-    <span
+    <ax-text
       hidden
       aria-hidden="true"
       data-el="placeholder">
-    </span>
+    </ax-text>
     <span
       contenteditable
       tabindex="0"
@@ -105,13 +104,13 @@ template.innerHTML = `
       aria-describedby="validation"
       data-el="input">
     </span>
-  </span>
-  <span
+  </ax-text>
+  <ax-text
     id="validation"
     hidden
     aria-hidden="true"
     data-el="validation">
-  </span>
+  </ax-text>
 `
 window.document.body.append(template)
 window.customElements.define('ax-textbox', class AXTextbox extends AXElement {
