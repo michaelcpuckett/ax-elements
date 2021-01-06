@@ -84,12 +84,33 @@
       ax-name="AX Elements"
       ax-cloak>
       <ax-landmark
+        ax-name="Banner TODO"
+        ax-section="banner">
+        <p>Banner</p>
+      </ax-landmark>
+      <ax-landmark
+        ax-name="Navigation TODO"
+        ax-section="navigation">
+        <p>Navigation</p>
+      </ax-landmark>
+      <ax-landmark
+        ax-name="Contentinfo TODO"
+        ax-section="contentinfo">
+        <p>Contentinfo</p>
+      </ax-landmark>
+      <ax-landmark
         ax-name="Landmark Regions">
+        <ax-paragraph>
+          Sectioning roles and heading levels are implied, and can be overridden. Headings are required.
+        </ax-paragraph>
         <ax-landmark
-          ax-name="Calculated (Region)">
-          <ax-paragraph>
-            Content
-          </ax-paragraph>
+          ax-name="Calculated (Main > Section > Article > Region)">
+          <ax-landmark
+            ax-name="Calculated Inner">
+            <ax-paragraph>
+              Content
+            </ax-paragraph>
+          </ax-landmark>
         </ax-landmark>
         <ax-landmark
           ax-section="section"
@@ -104,6 +125,13 @@
           <ax-paragraph>
             Content
           </ax-paragraph>
+          <ax-landmark
+            ax-section="complementary"
+            ax-name="Complementary">
+            <ax-paragraph>
+              Supplementary content
+            </ax-paragraph>
+          </ax-landmark>
         </ax-landmark>
         <ax-landmark
           ax-section="region"

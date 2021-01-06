@@ -62,13 +62,13 @@ export default class AXLandmark extends AXElement {
   get nextRole() {
     if (!this.getAttribute('ax-section')) {
       switch (this.getAttribute('ax-internal-role')) {
-        case 'main': return 'article'
+        case 'main': return 'section'
         case 'section': return 'article'
         default: return 'region'
       }
     }
     switch (this.getAttribute('ax-section')) {
-      case 'main': return 'article'
+      case 'main': return 'section'
       case 'section': return 'article'
       default: return 'region'
     }
