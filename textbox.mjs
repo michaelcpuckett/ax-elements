@@ -1,6 +1,8 @@
 import AXElement from './element.mjs'
 import AXError from './internal/Error.mjs'
 
+const EMAIL_REGEXP = /(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9]))\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9])|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/
+
 const template = window.document.createElement('template')
 template.innerHTML = `
   <style>
@@ -219,7 +221,20 @@ window.customElements.define('ax-textbox', class AXTextbox extends AXElement {
     const value = (this.getAttribute('ax-value') || '').trim()
     if (this.hasAttribute('ax-required')) {
       if (!value.length) {
-        return 'This field is required.'
+        return 'This field needs to be filled out.'
+      }
+    }
+    if (this.hasAttribute('ax-validation')) {
+      switch (this.getAttribute('ax-validation')) {
+        case 'email': {
+          if (!value.match(EMAIL_REGEXP)) {
+            return 'This field needs to be in email format.'
+          }
+        }
+        break
+        default: {
+          // handle regex
+        }
       }
     }
     return ''
