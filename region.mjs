@@ -8,9 +8,9 @@ template.innerHTML = `
     }
     [data-el="region"] {
       border: 1px solid;
-      padding: 1em;
+      padding: var(--ax-spacing, 1em);
       display: grid;
-      grid-gap: 1em;
+      grid-gap: var(--ax-spacing, 1em);
     }
     [data-el="title"] {
       font-weight: bold;

@@ -6,11 +6,15 @@
     <title>AX Elements</title>
     <style>
       :root {
-        --ax-text-color: black;
-        --ax-interactive-color: blue;
-        --ax-interactive-background-color: white;
-        --ax-border-radius: 8px;
-        --ax-input-border-radius: 4px;
+        /*
+          --ax-border-radius: 8px;
+          --ax-interactive-border-radius: 4px;
+        */
+        /*
+          --ax-interactive-color: blue;
+          --ax-interactive-background-color: white;
+          --ax-spacing: 1em;
+        */
       }
       [ax-cloak] {
         position: absolute;
@@ -22,19 +26,12 @@
         overflow: hidden;
       }
       body {
-        margin: 0;
         transition: .125s opacity ease-in;
         font-family: sans-serif;
+        margin: 1em;
       }
       body[aria-busy="true"] {
         opacity: 0;
-      }
-      ax-landmark[ax-internal-level="2"]::part(region) {
-        padding: 0;
-        border: 0;
-      }
-      ax-landmark[ax-internal-level="2"]::part(headline) {
-        border-bottom: 1px solid;
       }
     </style>
     <script type="module">
@@ -148,7 +145,7 @@
           ax-name="Main"
           ax-section="main">
           <ax-paragraph>
-            The main role represents the unique structural unit of the document that contributes to the document outline, but whose content consitutes the current document's main content.
+            The main role represents the unique structural unit of the document that contributes to the document outline, and whose content consitutes the current document's main content.
           </ax-paragraph>
         </ax-landmark>
         <ax-landmark

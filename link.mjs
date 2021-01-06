@@ -4,7 +4,7 @@ const template = window.document.createElement('template')
 template.innerHTML = `
   <style>
     :host(*) {
-      color: var(--ax-interactive-color);
+      color: var(--ax-interactive-color, blue);
       text-decoration: underline;
       cursor: pointer;
     }

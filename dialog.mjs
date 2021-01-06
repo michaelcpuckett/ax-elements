@@ -48,7 +48,7 @@ template.innerHTML = `
       grid-gap: 12px;
       align-self: center;
       justify-self: center;
-      padding: var(--ax-padding, 1em);
+      padding: var(--ax-spacing, 1em);
       max-height: var(--ax-max-height, 50vh);
       max-height: min(var(--ax-max-height, 50vh), 100%);
       width: var(--ax-width, 50vw);

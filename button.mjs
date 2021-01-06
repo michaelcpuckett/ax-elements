@@ -11,21 +11,18 @@ template.innerHTML = `
       display: inline-grid;
     }
     :host(:not([ax-no-appearance])) {
-      --color: var(--ax-color, var(--ax-interactive-color));
-      --background-color: var(--ax-background-color, var(--ax-interactive-background-color));
       grid-auto-flow: column;
       align-items: center;
       width: max-content;
-      padding: var(--padding, 4px 8px);
-      color: var(--color, inherit);
-      background-color: var(--background-color, transparent);
-      border-color: var(--ax-border-color, var(--color));
-      border-radius: var(--ax-border-radius, 0);
-      border-width: var(--ax-border-width, 2px);
+      padding: calc(var(--ax-spacing, 1em) / 2) var(--ax-spacing, 1em);
+      color: var(--ax-interactive-background-color, white);
+      background-color: var(--ax-interactive-color, blue);
+      border-radius: var(--ax-interactive-border-radius, 0);
+      border-color: var(--ax-interactive-color, blue);
+      border-width: 2px;
       border-style: solid;
       outline: 0;
-      font-size: var(--ax-font-size, inherit);
-      line-height: var(--ax-line-height, 1);
+      line-height: 1;
     }
     :host([size="small"]) {
       padding: var(--ax-padding, 2px 4px);
@@ -38,10 +35,9 @@ template.innerHTML = `
     :host(:focus-visible:not([ax-no-appearance])) {
       box-shadow: 0 0 0 4px var(--ax-focus-color, #63ADE5);
     }
-    :host(:hover:not([ax-no-appearance])) {
-      filter: var(--color, contrast(0) sepia(1) hue-rotate(45deg));
-      background-color: var(--color, transparent);
-      color: var(--background-color, currentColor);
+    :host(:hover:not(:active):not([ax-no-appearance])) {
+      background-color: var(--ax-interactive-background-color, white);
+      color: var(--ax-interactive-color, blue);
     }
   </style>
   <slot name="label">

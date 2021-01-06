@@ -5,7 +5,7 @@ template.innerHTML = `
   <style>
     :host(:not([hidden])) {
       display: grid;
-      grid-gap: 1em;
+      grid-gap: var(--ax-spacing, 1em);
     }
   </style>
   <slot></slot>

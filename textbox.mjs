@@ -25,7 +25,7 @@ template.innerHTML = `
       padding: var(--ax-input-padding, 4px);
       width: 100%;
       position: relative;
-      height: 1em;
+      height: var(--ax-spacing, 1em);
       overflow: hidden;
     }
     :host([ax-multiline]) [data-el="wrapper"] {

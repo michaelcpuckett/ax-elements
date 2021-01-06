@@ -7,23 +7,32 @@ template.innerHTML = `
       display: contents;
     }
     [data-el="region"] {
-      border: 1px solid;
-      padding: 1em;
       display: grid;
-      grid-gap: 1em;
+      grid-gap: var(--ax-spacing, 1em);
+    }
+    :host(:not([ax-internal-level="1"]):not([ax-internal-level="2"])) [data-el="region"] {
+      border: 1px solid;
+      padding: var(--ax-spacing, 1em);
     }
     [data-el="headline"] {
-      font-weight: bold;
       display: grid;
     }
     [data-el="headline"][aria-level="1"] {
+      font-weight: bold;
       font-size: xx-large;
     }
     [data-el="headline"][aria-level="2"] {
+      font-weight: bold;
       font-size: x-large;
+      border-bottom: 1px solid;
     }
     [data-el="headline"][aria-level="3"] {
+      font-weight: bold;
       font-size: large;
+    }
+    [data-el="headline"][aria-level="4"] {
+      justify-self: flex-start;
+      border-bottom: 1px solid;
     }
   </style>
   <ax-view

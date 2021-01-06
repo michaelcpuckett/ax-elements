@@ -8,7 +8,7 @@ template.innerHTML = `
     }
     [data-el="unloaded"]:not([hidden]),
     [data-el="loaded"]:not([hidden]) {
-      grid-gap: 1em;
+      grid-gap: var(--ax-spacing, 1em);
       display: grid;
     }
   </style>
