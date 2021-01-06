@@ -265,6 +265,13 @@
             <output data-el="form-output"></output>
           </ax-text>
         </ax-form>
+        <ax-landmark
+          ax-name="Form within a Dialog">
+          <ax-button
+            ax-open-dialog="login">
+            Login
+          </ax-button>
+        </ax-landmark>
       </ax-landmark>
       <ax-landmark
         ax-name="Dialog">
@@ -396,6 +403,46 @@
           I too am content inside of a modal dialog!
         </a>
       </ax-paragraph>
+    </ax-dialog>
+
+    <ax-dialog
+      ax-ref="login"
+      ax-name="Login"
+      ax-cloak>
+      <ax-form
+        ax-action="example-success-response.json"
+        ax-method="GET"
+        onload="(function handleLoad (event) {
+          event.preventDefault()
+          this.closest('ax-dialog').removeAttribute('ax-open')
+          this.reset()
+        }.bind(this))(event)"
+        onerror="(function handleError (event) {
+          this.querySelector('[data-el=form-error]').innerText = event.error
+        }.bind(this))(event)">
+        <ax-textbox
+          ax-label="Email"
+          ax-name="email"
+          ax-placeholder="john@email.com"
+          ax-required
+          ax-validation="email">
+        </ax-textbox>
+        <ax-textbox
+          ax-label="Password"
+          ax-name="password"
+          ax-mask
+          ax-required>
+        </ax-textbox>
+        <ax-button
+          ax-submit>
+          Submit
+        </ax-button>
+        <output data-el="form-error"></output>
+        <ax-text slot="loaded">
+          Complete! Response:
+          <output data-el="form-output"></output>
+        </ax-text>
+      </ax-form>
     </ax-dialog>
 
     <!--

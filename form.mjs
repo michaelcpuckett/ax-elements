@@ -29,6 +29,30 @@ window.customElements.define('ax-form', class extends AXElement {
     this.role = 'form'
     this._unloadedEl = this.shadowRoot.querySelector('[data-el="unloaded"]')
     this._loadedEl = this.shadowRoot.querySelector('[data-el="loaded"]')
+    this.reset = () => {
+      this.dispatchEvent(new CustomEvent('ax-reset'))
+    }
+    this.addEventListener('ax-reset', () => {
+      const resetEvent = new Event('reset', {
+        cancelable: true
+      })
+      this.dispatchEvent(resetEvent)
+      if (!resetEvent.defaultPrevented) {
+        this.result = null
+        ;[...this.querySelectorAll('[ax-value]')].forEach(el => {
+          el.dispatchEvent(new CustomEvent('ax-reset'))
+        })
+        this.dispatchEvent(new CustomEvent('ax-show-unloaded'))
+      }
+    })
+    this.addEventListener('ax-show-unloaded', () => {
+      this._unloadedEl.removeAttribute('hidden')
+      this._loadedEl.setAttribute('hidden', '')
+    })
+    this.addEventListener('ax-show-loaded', () => {
+      this._unloadedEl.setAttribute('hidden', '')
+      this._loadedEl.removeAttribute('hidden')
+    })
     this.addEventListener('ax-submit', () => {
       const allFieldEls = [...this.querySelectorAll('[ax-value]')]
       const fieldsElsWithValidation = [...this.querySelectorAll('[ax-required]')]
@@ -85,8 +109,7 @@ window.customElements.define('ax-form', class extends AXElement {
               })
               this.dispatchEvent(loadEvent)
               if (!loadEvent.defaultPrevented) {
-                this._unloadedEl.setAttribute('hidden', '')
-                this._loadedEl.removeAttribute('hidden')
+                this.dispatchEvent(new CustomEvent('ax-show-loaded'))
               }
             })
             .catch(error => {

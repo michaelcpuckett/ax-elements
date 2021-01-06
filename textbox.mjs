@@ -82,6 +82,9 @@ template.innerHTML = `
     [data-el="validation"] {
       color: red;
     }
+    :host([ax-mask]) [data-el="input"] {
+      -webkit-text-security: disc;
+    }
   </style>
   <ax-text
     id="label"
@@ -132,7 +135,7 @@ window.customElements.define('ax-textbox', class AXTextbox extends AXElement {
       this._inputEl.focus()
     })
     this._inputEl.addEventListener('beforeinput', event => {
-      console.log('>', event.inputType)
+      // console.log('>', event.inputType)
       if (![
         'insertText',
         'insertReplacementText',
@@ -175,13 +178,12 @@ window.customElements.define('ax-textbox', class AXTextbox extends AXElement {
       if (event.key === 'Enter') {
         event.preventDefault()
         if (this.hasAttribute('ax-multiline')) {
-          this._inputEl.innerText = (this.getAttribute('ax-value') || '') + '\n\n'
-          this.setAttribute('ax-value', (this.getAttribute('ax-value') || '') + '\n\n')
+          this._setValue((this.getAttribute('ax-value') || '') + '\n\n')
           this._resetCursor()
         } else {
           const formEl = this.closest('ax-form, form')
           if (formEl) {
-            formEl.dispatchEvent(new Event('ax-submit'))
+            formEl.dispatchEvent(new CustomEvent('ax-submit'))
           }
         }
       }
@@ -189,6 +191,23 @@ window.customElements.define('ax-textbox', class AXTextbox extends AXElement {
     this.addEventListener('invalid', () => {
       this._validationEl.removeAttribute('hidden')
     })
+    this.reset = () => {
+      this.dispatchEvent(new CustomEvent('ax-reset'))
+    }
+    this.addEventListener('ax-reset', () => {
+      const resetEvent = new Event('reset', {
+        cancelable: true
+      })
+      this.dispatchEvent(resetEvent)
+      if (!resetEvent.defaultPrevented) {
+        this._setValue('')
+      }
+    })
+  }
+
+  _setValue(value) {
+    this._inputEl.innerText = value
+    this.setAttribute('ax-value', value)
   }
 
   _resetCursor() {
