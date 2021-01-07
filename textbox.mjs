@@ -202,34 +202,28 @@ window.customElements.define('ax-textbox', class AXTextbox extends AXElement {
       const length = end - start
 
       if (isDeleting) {
-        this.value = splice(this.value || '', [
+        this.setAttribute('ax-value', splice(this.value || '', [
           end,
           this._anchorDiff * -1
-        ])
+        ]))
       } else {
-        this.value = splice(this.value || '', [
+        this.setAttribute('ax-value', splice(this.value || '', [
           start,
           length,
           ...event.data ? [
             event.data
           ] : []
-        ])
+        ]))
       }
 
-      this.setAttribute('ax-value', this.value)
-
-      if (this.value) {
-        this._validationEl.removeAttribute('hidden')
-      } else {
-        this._validationEl.setAttribute('hidden', 'hidden')
-      }
+      this._checkValidity()
     })
 
     this._inputEl.addEventListener('keydown', event => {
       if (event.key === 'Enter') {
         event.preventDefault()
         if (this.hasAttribute('ax-multiline')) {
-          this._setValue((this.getAttribute('ax-value') || '') + '\n\n')
+          this._setValue((this.value || '') + '\n\n')
           this._resetCursor()
         } else {
           const formEl = this.closest('ax-form, form')
@@ -304,7 +298,7 @@ window.customElements.define('ax-textbox', class AXTextbox extends AXElement {
   }
 
   _getValidationMessage() {
-    const value = (this.getAttribute('ax-value') || '').trim()
+    const value = (this.value || '').trim()
     if (this.hasAttribute('ax-required')) {
       if (!value.length) {
         return 'This field needs to be filled out.'
@@ -391,12 +385,13 @@ window.customElements.define('ax-textbox', class AXTextbox extends AXElement {
       }
       break
       case 'ax-value': {
+        this.value = value || ''
         if (value) {
+          this._validationEl.setAttribute('hidden', '')
           this._placeholderEl.setAttribute('hidden', '')
         } else {
           this._placeholderEl.removeAttribute('hidden')
         }
-        this._checkValidity()
       }
       break
       case 'ax-placeholder': {
