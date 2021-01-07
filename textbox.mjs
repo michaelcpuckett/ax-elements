@@ -2,6 +2,8 @@ import AXElement from './element.mjs'
 import AXError from './internal/Error.mjs'
 
 const EMAIL_REGEXP = /(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9]))\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9])|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/
+const NUMBER_REGEXP = /^[0-9]+$/
+const PHONE_NUMBER_REGEXP = /^[0-9\+\-\(\) ]+$/
 
 const template = window.document.createElement('template')
 template.innerHTML = `
@@ -97,7 +99,6 @@ template.innerHTML = `
   <ax-text
     data-el="wrapper">
     <ax-text
-      hidden
       aria-hidden="true"
       data-el="placeholder">
     </ax-text>
@@ -137,23 +138,50 @@ window.customElements.define('ax-textbox', class AXTextbox extends AXElement {
       this._inputEl.focus()
     })
     this._inputEl.addEventListener('beforeinput', event => {
-      // console.log('>', event.inputType)
-      if (![
-        'insertText',
-        'insertReplacementText',
-        'insertFromYank',
-        'insertFromDrop',
-        'insertFromPaste',
-        'insertFromPasteAsQuotation', // ?
-        'insertTranspose',
-        'insertCompositionText', // ?
+      this._updateSelection()
+      // if (![
+      //   'insertText',
+      //   'insertReplacementText',
+      //   'insertFromYank',
+      //   'insertFromDrop',
+      //   'insertFromPaste',
+      //   'insertFromPasteAsQuotation', // ?
+      //   'insertTranspose',
+      //   'insertCompositionText', // ?
 
-        'deleteSoftLineBackward',
-        'deleteSoftLineForward',
-        'deleteEntireSoftLine',
-        'deleteHardLineBackward',
-        'deleteHardLineForward',
+      //   'deleteSoftLineBackward',
+      //   'deleteSoftLineForward',
+      //   'deleteEntireSoftLine',
+      //   'deleteHardLineBackward',
+      //   'deleteHardLineForward',
 
+      //   'deleteByDrag',
+      //   'deleteByCut',
+      //   'deleteByPaste',
+      //   'deleteContent',
+      //   'deleteContentBackward',
+      //   'deleteContentForward',
+      //   'deleteWordForward',
+      //   'deleteWordBackward',
+
+      //   'historyUndo',
+      //   'historyRedo',
+
+      //   'formatSetInlineTextDirection',
+      //   'formatSetBlockTextDirection'
+      // ].includes(event.inputType)) {
+      //   event.preventDefault()
+      // }
+    })
+
+    this._inputEl.addEventListener('input', event => {
+      const splice = (value, sliceArgs) => {
+        const iterable = value.split('')
+        iterable.splice(...sliceArgs)
+        return iterable.join('')
+      }
+      const isDeleting = [
+        'deleteContentBackward',
         'deleteByDrag',
         'deleteByCut',
         'deleteByPaste',
@@ -161,21 +189,42 @@ window.customElements.define('ax-textbox', class AXTextbox extends AXElement {
         'deleteContentBackward',
         'deleteContentForward',
         'deleteWordForward',
-        'deleteWordBackward',
+        'deleteWordBackward'
+      ].includes(event.inputType)
 
-        'historyUndo',
-        'historyRedo',
+      if (isDeleting) {
+        this._updateSelection()
+      }
 
-        'formatSetInlineTextDirection',
-        'formatSetBlockTextDirection'
-      ].includes(event.inputType)) {
-        event.preventDefault()
+      const hasSelection = this._startOffset !== this._endOffset
+      const start = hasSelection ? this._startOffset : this._focusOffset
+      const end = hasSelection ? this._endOffset : this._anchorOffset
+      const length = end - start
+
+      if (isDeleting) {
+        this.value = splice(this.value || '', [
+          end,
+          this._anchorDiff * -1
+        ])
+      } else {
+        this.value = splice(this.value || '', [
+          start,
+          length,
+          ...event.data ? [
+            event.data
+          ] : []
+        ])
+      }
+
+      this.setAttribute('ax-value', this.value)
+
+      if (this.value) {
+        this._validationEl.removeAttribute('hidden')
+      } else {
+        this._validationEl.setAttribute('hidden', 'hidden')
       }
     })
-    this._inputEl.addEventListener('input', () => {
-      this.setAttribute('ax-value', this._inputEl.innerText)
-      this._validationEl.setAttribute('hidden', 'hidden')
-    })
+
     this._inputEl.addEventListener('keydown', event => {
       if (event.key === 'Enter') {
         event.preventDefault()
@@ -205,11 +254,48 @@ window.customElements.define('ax-textbox', class AXTextbox extends AXElement {
         this._setValue('')
       }
     })
+    this._updateSelection()
+    window.document.addEventListener('selectionchange', () => {
+      this._updateSelection()
+    })
+  }
+
+  _updateSelection() {
+    const selection = this.shadowRoot.getSelection()
+    this._anchorDiff = (selection.anchorOffset || 0) - (this._anchorOffset || 0)
+    this._anchorOffset = selection.anchorOffset
+    this._focusDiff = (selection.focusOffset || 0) - (this._focusOffset || 0)
+    this._focusOffset = selection.focusOffset
+    if (selection.rangeCount) {
+      const range = selection.getRangeAt(0)
+      this._startDiff = (range.startOffset || 0) - (this._startOffset || 0)
+      this._startOffset = range.startOffset
+      this._endDiff = (range.endOffset || 0) - (this._endOffset || 0)
+      this._endOffset = range.endOffset
+    } else {
+      this._startDiff = 0 - (this._startOffset || 0)
+      this._startOffset = null
+      this._endDiff = 0 - (this._endOffset || 0)
+      this._endOffset = null
+    }
   }
 
   _setValue(value) {
     this._inputEl.innerText = value
     this.setAttribute('ax-value', value)
+  }
+
+  _getCursorPosition() {
+    const range = this.shadowRoot.getSelection().getRangeAt(0)
+    return range.endOffset
+  }
+
+  _getSelectionRange() {
+    const range = this.shadowRoot.getSelection().getRangeAt(0)
+    return {
+      start: range.startOffset,
+      end: range.endOffset
+    }
   }
 
   _resetCursor() {
@@ -232,10 +318,32 @@ window.customElements.define('ax-textbox', class AXTextbox extends AXElement {
           }
         }
         break
+        case 'number': {
+          if (!value.match(NUMBER_REGEXP)) {
+            return 'This field needs to be numbers only.'
+          }
+        }
+        break
+        case 'phone-number': {
+          if (!value.match(PHONE_NUMBER_REGEXP)) {
+            return 'This field needs to in phone number format.'
+          }
+        }
+        break
         default: {
-          // handle regex
+          if (!value.match(this.getAttribute('ax-validation'))) {
+            return 'This field needs to be in the correct format.'
+          }
         }
       }
+    }
+    const minLength = parseInt(this.getAttribute('ax-minlength'), 10) || -1
+    if (value.length < minLength) {
+      return `This field needs to have at least ${minLength} characters.`
+    }
+    const maxLength = parseInt(this.getAttribute('ax-maxlength'), 10) || Infinity
+    if (value.length > maxLength) {
+      return `This fields needs to have less than ${maxLength + 1} characters.`
     }
     return ''
   }
@@ -266,6 +374,7 @@ window.customElements.define('ax-textbox', class AXTextbox extends AXElement {
       'ax-required',
       'ax-disabled',
       'ax-placeholder',
+      'ax-validation',
       'ax-multiline',
       'ax-internal-invalid'
     ]
@@ -291,12 +400,7 @@ window.customElements.define('ax-textbox', class AXTextbox extends AXElement {
       }
       break
       case 'ax-placeholder': {
-        if (value) {
-          this._placeholderEl.innerText = value
-          this._placeholderEl.removeAttribute('hidden')
-        } else {
-          this._placeholderEl.setAttribute('hidden', '')
-        }
+        this._placeholderEl.innerText = value
       }
       break
       case 'ax-disabled': {
@@ -324,6 +428,24 @@ window.customElements.define('ax-textbox', class AXTextbox extends AXElement {
           this._inputEl.setAttribute('aria-multiline', 'true')
         } else {
           this._inputEl.removeAttribute('aria-multiline')
+        }
+      }
+      break
+      case 'ax-validation': {
+        if (value === 'phone-number') {
+          if (!this.hasAttribute('ax-minlength')) {
+            this.setAttribute('ax-minlength', '10')
+          }
+          if (!this.hasAttribute('ax-maxlength')) {
+            this.setAttribute('ax-maxlength', '20')
+          }
+        } else {
+          if (this.getAttribute('ax-minlength') === '10') {
+            this.removeAttribute('ax-minlength')
+          }
+          if (this.getAttribute('ax-maxlength') === '20') {
+            this.removeAttribute('ax-maxlength')
+          }
         }
       }
       break
