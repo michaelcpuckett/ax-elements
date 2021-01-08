@@ -87,12 +87,12 @@ export default class AXLandmark extends AXElement {
   }
 
   get nextLevel() {
-    return `${parseInt(this.getAttribute('ax-heading-level') || 1, 10) + 1}`
+    return `${parseInt(this.getAttribute('ax-internal-level') || 1, 10) + 1}`
   }
 
   connectedCallback() {
     setTimeout(() => {
-      ;[...this.querySelectorAll('ax-landmark')].forEach(el => {
+      ;[...this.querySelectorAll('ax-landmark,ax-embed')].forEach(el => {
         el.setAttribute('ax-internal-role', this.nextRole)
         el.setAttribute('ax-internal-level', this.nextLevel)
       })

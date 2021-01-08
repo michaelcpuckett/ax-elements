@@ -1,0 +1,34 @@
+<ax-landmark
+  ax-name="Form">
+  <ax-form
+    ax-action="example-success-response.json"
+    ax-method="GET"
+    onload="(function handleLoad (event) {
+      this.querySelector('[data-el=form-output]').innerText = JSON.stringify(this.result)
+    }.bind(this))(event)"
+    onerror="(function handleError (event) {
+      this.querySelector('[data-el=form-error]').innerText = event.error
+    }.bind(this))(event)">
+    <ax-textbox
+      ax-label="First Name"
+      ax-ref="firstName"
+      ax-placeholder="John"
+      ax-required>
+    </ax-textbox>
+    <ax-textbox
+      ax-label="Last Name"
+      ax-ref="lastName"
+      ax-placeholder="Doe"
+      ax-required>
+    </ax-textbox>
+    <ax-button
+      ax-submit>
+      Submit
+    </ax-button>
+    <output data-el="form-error"></output>
+    <ax-text slot="loaded">
+      Complete! Response:
+      <output data-el="form-output"></output>
+    </ax-text>
+  </ax-form>
+</ax-landmark>

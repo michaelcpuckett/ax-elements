@@ -1,0 +1,22 @@
+<ax-landmark
+  ax-name="Alert">
+  <ax-form
+    ax-action="example-success-response.json"
+    ax-method="GET"
+    onload="(function handleLoad(event) {
+      event.preventDefault()
+      document.querySelector('ax-alert[ax-ref=saved]').setAttribute('ax-open', '')
+    })(event)">
+    <ax-textbox
+      ax-label="Message"
+      ax-ref="message"
+      ax-value="Wow..."
+      ax-multiline
+      ax-required>
+    </ax-textbox>
+    <ax-button
+      ax-submit>
+      Save
+    </ax-button>
+  </ax-form>
+</ax-landmark>

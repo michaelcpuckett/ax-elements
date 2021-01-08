@@ -1,0 +1,17 @@
+[ax-cloak] {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  white-space: nowrap;
+  clip: rect(0 0 0 0);
+  margin: -1px;
+  overflow: hidden;
+}
+body {
+  transition: .125s opacity ease-in;
+  font-family: sans-serif;
+  margin: 1em;
+}
+body[aria-busy="true"] {
+  opacity: 0;
+}

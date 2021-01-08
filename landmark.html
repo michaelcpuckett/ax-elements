@@ -1,0 +1,131 @@
+<link rel="stylesheet" href="style.css" />
+<script type="module">
+  import './landmark.mjs'
+  import './paragraph.mjs'
+</script>
+<ax-landmark
+  ax-name="Landmarks">
+  <ax-paragraph>
+    Navigational (or sectioning) landmarks comprise the document outline.
+  </ax-paragraph>
+  <ax-paragraph>
+    The document outline allows users of assistive technologies to skip to or skip over sections of the document.
+  </ax-paragraph>
+  <ax-paragraph>
+    Landmarks also assist robots in understanding which parts of the document are important, and how information is grouped.
+  </ax-paragraph>
+  <figure>
+    <pre>
+  |DOCUMENT-----------------|
+  |----BANNER---------------|
+  |--------IMG--------------|
+  |--------SEARCH-----------|
+  |-----------TEXTBOX-------|
+  |----NAVIGATION-----------|
+  |--------LINK-------------|
+  |--------LINK-------------|
+  |--------LINK-------------|
+  |----MAIN-----------------|
+  |--------NAVIGATION-------|
+  |------------LINK---------|
+  |------------LINK---------|
+  |------------LINK---------|
+  |--------SECTION----------|
+  |--------SECTION----------|
+  |------------REGION-------|
+  |--------SECTION----------|
+  |--------ASIDE------------|
+  |------------LINK---------|
+  |------------LINK---------|
+  |------------LINK---------|
+  |----ASIDE----------------|
+  |--------LINK-------------|
+  |--------LINK-------------|
+  |--------LINK-------------|
+  |----CONTENTINFO----------|
+  |--------PARAGRAPH--------|
+  |--------LINK-------------|
+  |--------LINK-------------|
+  |--------LINK-------------|
+    </pre>
+  </figure>
+  <ax-landmark
+    ax-section="section"
+    ax-name="Section">
+    <ax-paragraph>
+      The section role represents a discrete structural unit of the document that contributes to the document outline, whose content is all related in some way.
+    </ax-paragraph>
+    <ax-landmark
+      ax-section="section"
+      ax-name="Nested Section">
+      <ax-paragraph>
+        Section roles can be nested.
+      </ax-paragraph>
+    </ax-landmark>
+  </ax-landmark>
+  <ax-landmark
+    ax-section="region"
+    ax-name="Region">
+    <ax-paragraph>
+      The region role represents some part of the document that does not comprise the document's structure but is still significant enough to contribute to the document outline.
+    </ax-paragraph>
+  </ax-landmark>
+  <ax-landmark
+    ax-name="Calculated (Main > Section > Region)">
+    <ax-paragraph>
+      Here, sectioning roles and heading levels are implied via calculation, and can be overridden.
+    </ax-paragraph>
+    <ax-paragraph>
+      The outermost landmark automatically gets the main role (of which there can only be one).
+    </ax-paragraph>
+    <ax-paragraph>
+      Descendant landmarks of the main role automatically get the section role.
+    </ax-paragraph>
+    <ax-paragraph>
+      Descendant landmarks of section roles automatically get the region role.
+    </ax-paragraph>
+  </ax-landmark>
+  <ax-landmark
+    ax-name="Main"
+    ax-section="main">
+    <ax-paragraph>
+      The main role represents the unique structural unit of the document that contributes to the document outline, and whose content consitutes the current document's main content. This means it should not include repeated site-oriented content.
+    </ax-paragraph>
+  </ax-landmark>
+  <ax-landmark
+    ax-name="Banner"
+    ax-section="banner">
+    <ax-paragraph>
+      A banner landmark identifies site-oriented content at the beginning of each page within a website. Site-oriented content typically includes things such as the logo or identity of the site sponsor, and site-specific search tool.
+    </ax-paragraph>
+    <ax-paragraph>
+      The banner landmark is a unique top-level role that identifies a section of the document that does not consitute the main content.
+    </ax-paragraph>
+    <ax-paragraph>
+      It should appear before the main sectioning element.
+    </ax-paragraph>
+  </ax-landmark>
+  <ax-landmark
+    ax-name="Contentinfo"
+    ax-section="contentinfo">
+    <ax-paragraph>
+      The contentinfo role represents the unique footer structural unit of the document that contributes to the document outline, but whose content is repeated on multiple documents and as such does not consitute the current document's main content.
+    </ax-paragraph>
+    <ax-paragraph>
+      It should appear after the main sectioning element.
+    </ax-paragraph>
+  </ax-landmark>
+  <ax-landmark
+    ax-name="Navigation"
+    ax-section="navigation">
+    <ax-link ax-url="#">
+      The navigation role represents a structural unit of the document that contributes to the document outline, whose content is links for navigating the document or related documents.
+    </ax-link>
+    <ax-link ax-url="#">
+      This lankmark only accepts links.
+    </ax-link>
+    <ax-paragraph>
+      Non-link elements are removed.
+    </ax-paragraph>
+  </ax-landmark>
+</ax-landmark>

@@ -1,0 +1,15 @@
+<ax-landmark
+  ax-name="Button">
+  <ax-text>
+    <ax-button
+      onclick="(function handleClick () {
+        document.querySelector('[data-el=button-output]').innerText =
+          (parseInt(document.querySelector('[data-el=button-output]').innerText, 10) || 0) + 1
+      })()">
+      Increase Counter
+    </ax-button>
+    <output data-el="button-output">
+      0
+    </output>
+  </ax-text>
+</ax-landmark>
